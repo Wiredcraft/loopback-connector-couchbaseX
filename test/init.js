@@ -1,8 +1,9 @@
 module.exports = require('should');
 
-function noop(err, res) {}
-
 var DataSource = require('loopback-datasource-juggler').DataSource;
+var ModelBuilder = require('loopback-datasource-juggler').ModelBuilder;
+
+function noop(err, res) {}
 
 var config = require('rc')('loopback', {
   test: {
@@ -33,9 +34,9 @@ global.getDataSource = global.getSchema = function(customConfig, callback) {
   if (callback == null) {
     callback = noop;
   }
-
+  var builder = new ModelBuilder();
   var db = new DataSource(require('../'), customConfig || config);
-  
+
   db.log = function(a) {
     console.log(a);
   };
