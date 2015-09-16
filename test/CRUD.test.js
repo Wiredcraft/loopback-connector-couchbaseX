@@ -16,4 +16,20 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
+  it('exists', function(done) {
+    Person.exists('asd', function(err, person) {
+      console.log(err);
+      customer.name.should.equal('Charlie');
+      done(err, person);
+    });
+  });
+
+  it('find', function(done) {
+    Person.find({id: 'asd'}, function(err, person) {
+      console.log(err);
+      customer.name.should.equal('Charlie');
+      done(err, person);
+    });
+  });
+
 });

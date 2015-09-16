@@ -14,3 +14,8 @@ For detail information:
 ```bash
 $ DEBUG=loopback:connector:couchbase3 mocha test 
 ```
+
+### TODO
+
+- Deploy ```Couchbase.prototype.count``` which is relied by ```Couchbase.prototype.exists```
+- Deploy ```Couchbase.prototype.all``` which is relied by ```Couchbase.prototype.find```
