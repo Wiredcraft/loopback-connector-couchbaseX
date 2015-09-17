@@ -22,6 +22,8 @@ Remove document by given document ID.
 
 ### Test
 
+Run your CouchBase Server at 127.0.0.1 first.
+
 ```bash
 $ mocha test 
 ```
