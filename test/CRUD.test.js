@@ -11,16 +11,22 @@ describe('Couchbase CRUD methods', function() {
       id: '1',
       name: 'Charlie',
       age: 24
-    }, function(err, person) {
-      person.age.should.equal(24);
-      done(err, person);
+    }, function(err, res) {
+      if(err) console.log(err);
+      //console.log(res);
+      res.age.should.eql(24);
+      res.name.should.eql('Charlie');
+      done(err, res);
     });
   });
 
   it('find', function(done) {
-    Person.find({id: '1'}, function(err, person) {
-      person.name.should.equal('Charlie');
-      done(err, person);
+    Person.find({id: '1'}, function(err, res) {
+      if(err) console.log(err);
+      //console.log(res);
+      res.value.age.should.eql(24);
+      res.value.name.should.eql('Charlie');
+      done(err, res);
     });
   });
 
@@ -32,7 +38,8 @@ describe('Couchbase CRUD methods', function() {
       name: 'Mary',
       age: 37
     }, function(err, res) {
-      assert.equal(res, true);
+      if(err) console.log(err);
+      //console.log(res);
       done(err, res);
     });
   });
@@ -41,7 +48,8 @@ describe('Couchbase CRUD methods', function() {
     Person.remove({
       id: '1'
     },function(err, res) {
-      assert.equal(res, true);
+      if(err) console.log(err);
+      //console.log(res);
       done(err, res);
     });
   });
