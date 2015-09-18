@@ -37,14 +37,14 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  it('destroy', function(done) {
-    Person.remove({
-      id: '1'
-    },function(err, res) {
-      assert.equal(res, true);
-      done(err, res);
-    });
-  });
+  // it('destroy', function(done) {
+  //   Person.remove({
+  //     id: '1'
+  //   },function(err, res) {
+  //     assert.equal(res, true);
+  //     done(err, res);
+  //   });
+  // });
 
   // it('count', function(done) {
   //   Person.count({id: 'asd'}, function(err, person) {
