@@ -6,7 +6,8 @@ var db = getDataSource();
 describe('Couchbase CRUD methods', function() {
   var Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
 
-  it('create', function(done) {
+  //CREATE TEST
+  it('create test', function(done) {
     Person.create({
       id: '1',
       name: 'Charlie',
@@ -20,17 +21,42 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  it('find', function(done) {
+  it('create error test', function(done) {
+    Person.create({
+      id: '1',
+      name: 'Charlie',
+      age: 24
+    }, function(err, res) {
+      if(err) {
+        err.code.should.eql(12);
+        err = null;
+      }
+      done(err, res);
+    });
+  });
+
+  //FIND TEST
+  it('find test', function(done) {
     Person.find({id: '1'}, function(err, res) {
       if(err) console.log(err);
-      //console.log(res);
       res.value.age.should.eql(24);
       res.value.name.should.eql('Charlie');
       done(err, res);
     });
   });
 
-  it('update', function(done) {
+  it('find error test', function(done) {
+    Person.find({id: '10'}, function(err, res) {
+      if(err) {
+        err.code.should.eql(13);
+        err = null;
+      }
+      done(err, res);
+    });
+  });
+
+  //UPDATE TEST
+  it('update test', function(done) {
     Person.update({
       id: '1'
     },{
@@ -39,17 +65,28 @@ describe('Couchbase CRUD methods', function() {
       age: 37
     }, function(err, res) {
       if(err) console.log(err);
-      //console.log(res);
       done(err, res);
     });
   });
 
-  it('destroy', function(done) {
+  //DESTROY TEST
+  it('destroy test', function(done) {
     Person.remove({
       id: '1'
     },function(err, res) {
       if(err) console.log(err);
-      //console.log(res);
+      done(err, res);
+    });
+  });
+
+  it('destroy error test', function(done) {
+    Person.remove({
+      id: '1'
+    },function(err, res) {
+      if(err) {
+        err.code.should.eql(13);
+        err = null;
+      }
       done(err, res);
     });
   });
