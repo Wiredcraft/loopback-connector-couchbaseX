@@ -6,19 +6,26 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 
 - Insert
 
-For document ```insert``` only, and will not update a existed one. If there is a document with same ID, a exception will be thrown.
+For document ```insert``` only, and will not update a existed one. If there is a document with same ID, a exception will be thrown. If insert successfully, a instance will be returned.
+
+Note: There should be a custom id in data model, like:
+
+```
+var Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
+var Student = db.createModel('student', {No: {type: String, id: true}, name: String, age: Number, emails:[String]});
+```
 
 - Find
 
-Find document by given document ID.
+Find document by a given document ID. If there is no document matched, a exception will be thrown.
 
 - Update
 
-Update a existed document by giving a document ID, or create a new one if there is no such a document.
+Update a existed document by giving a document ID, or create a new one if there is no such a document, like ```Insert```.
 
 - Remove
 
-Remove document by given document ID.
+Remove document by a given document ID. If there is no document matched, a exception will be thrown.
 
 ### Test
 
