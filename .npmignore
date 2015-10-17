@@ -1,0 +1,17 @@
+.*
+!.npmignore
+
+*.log
+*.orig
+
+/test
+/example
+
+/*.js
+!/index.js
+
+/*.json
+!/package.json
+
+/*.md
+!/README.md
