@@ -16,7 +16,7 @@ describe('Couchbase CRUD methods', function () {
       {
         id: '2',
         name: 'Mary',
-        age: 34
+        age: 24
       },
       {
         name: 'Jason',
@@ -29,9 +29,11 @@ describe('Couchbase CRUD methods', function () {
   //CREATE TEST
   it('create should create new document with giving id', function (done) {
     return Person.create(persons[0]).then(function (person) {
-      //person.get('id').should.equal('1');
       person.name.should.equal('Charlie');
-      done();
+      Person.create(persons[1]).then(function (person) {
+        person.name.should.equal('Mary');
+        done();
+      });
     }).catch(function (err) {
       done(err);
     });
@@ -54,16 +56,36 @@ describe('Couchbase CRUD methods', function () {
   });
 
 //FIND TEST
-  it('find should find a instance by id', function (done) {
-    return Person.find({id: persons[0].id}).then(function (person) {
+  it('find should find a instance by a giving id', function (done) {
+    return Person.findById(persons[0].id).then(function (person) {
       person.value.name.should.eql('Charlie');
       done();
     }).catch(function (err) {
       done(err);
     });
   });
+
+  it('find should find instances by giving ids', function (done) {
+    return Person.findByIds([persons[0].id,persons[1].id]).then(function (person) {
+      person[0][persons[0].id].value.name.should.eql('Charlie');
+      person[0][persons[1].id].value.name.should.eql('Mary');
+      done();
+    }).catch(function (err) {
+      done(err);
+    });
+  });
+
+  // it('find should find a instance (filter)', function (done) {
+  //   return Person.find({where:{age:24}}).then(function (person) {
+  //     person[0].value.name.should.eql('Charlie');
+  //     done();
+  //   }).catch(function (err) {
+  //     done(err);
+  //   });
+  // });
+
   it('find error with a not exist id', function (done) {
-    return Person.find({id: uuid.v4()}).then().catch(function (err) {
+    return Person.findById(uuid.v4()).then().catch(function (err) {
       should.exist(err);
       done();
     });
@@ -76,7 +98,7 @@ describe('Couchbase CRUD methods', function () {
     }, {
       age: 37
     }).then(function () {
-      Person.find({id: persons[0].id}).then(function (person) {
+      Person.findById(persons[0].id).then(function (person) {
         person.value.age.should.eql(37);
         done();
       });
@@ -92,7 +114,7 @@ describe('Couchbase CRUD methods', function () {
     }, {
       name: 'Henry'
     }).then(function () {
-      Person.find({id: newDocId}).then(function (person) {
+      Person.findById(newDocId).then(function (person) {
         person.value.name.should.eql('Henry');
         done();
       });
@@ -102,21 +124,24 @@ describe('Couchbase CRUD methods', function () {
   });
 
 //DESTROY TEST
+  
   it('remove one exist document by id', function (done) {
-    return Person.remove({id: persons[0].id}).then(function () {
-      done();
+    return Person.removeById(persons[0].id).then(function () {
+      Person.removeById(persons[1].id).then(function () {
+        done();
+      });
     }).catch(function (err) {
       done(err);
     });
   });
 
-  //it('remove one exist document(where)', function (done) {
+  // it('remove one exist document(where)', function (done) {
   //  return Person.remove({name: 'Jason'}).then(function () {
   //    done();
   //  }).catch(function (err) {
   //    done(err);
   //  });
-  //});
+  // });
 
   it('destroy error when unmatched documnet', function (done) {
     return Person.remove({id: uuid.v4()}).then().catch(function (err) {
