@@ -8,12 +8,6 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 
 For document ```insert``` only, and will not update a existed one. If there is a document with same ID, a exception will be thrown. If insert successfully, a instance will be returned.
 
-Note: There should be a custom id in data model, like:
-
-```
-var Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
-var Student = db.createModel('student', {No: {type: String, id: true}, name: String, age: Number, emails:[String]});
-```
 
 - Find
 
