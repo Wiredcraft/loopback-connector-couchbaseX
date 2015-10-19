@@ -33,6 +33,7 @@
     "loopback-connector": "^2.2.0"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "loopback-datasource-juggler": "^2.28.0",
     "mocha": "^2.0.0",
     "node-uuid": "^1.4.3",
