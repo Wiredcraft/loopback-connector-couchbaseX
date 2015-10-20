@@ -43,6 +43,6 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "make test"
+    "test": "jscs */*.js && make test"
   }
 }
