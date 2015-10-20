@@ -2,6 +2,7 @@
 !.gitignore
 !.npmignore
 !.jshintrc
+!.jscsrc
 
 *.orig
 
