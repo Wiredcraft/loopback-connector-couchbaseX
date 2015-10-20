@@ -1,0 +1,6 @@
+#Begin  Mon Oct 19 2015 12:12:54 GMT+0800 (CST)
+create x 393 ops/sec ±2.61% (79 runs sampled)
+find x 526 ops/sec ±2.09% (79 runs sampled)
+update x 400 ops/sec ±2.77% (77 runs sampled)
+remove x 446 ops/sec ±2.34% (75 runs sampled)
+#End  Mon Oct 19 2015 12:13:18 GMT+0800 (CST)
