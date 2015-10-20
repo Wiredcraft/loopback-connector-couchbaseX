@@ -4,6 +4,8 @@
 *.log
 *.orig
 
+node_modules
+
 /test
 /example
 
@@ -14,4 +16,5 @@
 !/package.json
 
 /*.md
+!/History.md
 !/README.md

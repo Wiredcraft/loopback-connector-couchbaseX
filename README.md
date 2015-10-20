@@ -48,3 +48,17 @@ For detail information:
 $ DEBUG=loopback:connector:couchbase3 mocha test 
 ```
 
+## Git Summary
+
+```
+ project  : loopback-connector-couchbase3
+ repo age : 8 weeks
+ active   : 16 days
+ commits  : 37
+ files    : 32
+ authors  :
+    20  CCharlieLi   54.1%
+    10  Makara Wang  27.0%
+     4  chopperlee   10.8%
+     3  Leo Zhou     8.1%
+```
