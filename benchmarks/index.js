@@ -1,4 +1,5 @@
-"use strict";
+'use strict';
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');
@@ -31,52 +32,44 @@ function resetTestState() {
 }
 
 var suite = new Benchmark.Suite;
-suite
-  .on('start', function () {
-    console.log('#Begin ', new Date());
-  })
-  .add('create', {
-    defer: true,
-    fn: function (deferred) {
-      Todo.create({content: 'Catch Pokemon ' + uniqVal, id: (uniqVal++)}, function () {
-        deferred.resolve();
-      });
-    },
-    onComplete: resetTestState
-  })
-  .add('find', {
-    defer: true,
-    fn: function (deferred) {
-      Todo.find({id: (uniqVal++)}, function () {
-        deferred.resolve();
-      });
-    },
-    onComplete: resetTestState
-  })
-  .add('update', {
-    defer: true,
-    fn: function (deferred) {
-      Todo.update({id: (uniqVal++)}, {content: 'Catch Pokemon ' + uniqVal}, function () {
-        deferred.resolve();
-      });
-    },
-    onComplete: resetTestState
-  })
-  .add('remove', {
-    defer: true,
-    fn: function (deferred) {
-      Todo.remove({id: (uniqVal++)}, function () {
-        deferred.resolve();
-      });
-    },
-    onComplete: resetTestState
-  })
-  .on('cycle', function (event) {
-    console.log(String(event.target));
-  })
-  .on('complete', function () {
-    console.log('#End ', new Date());
-    //Todo.destroyAll();
-    process.exit();
-  })
-  .run({async: true});
+suite.on('start', function() {
+  console.log('#Begin ', new Date());
+}).add('create', {
+  defer: true,
+  fn: function(deferred) {
+    Todo.create({content: 'Catch Pokemon ' + uniqVal, id: (uniqVal++)}, function() {
+      deferred.resolve();
+    });
+  },
+  onComplete: resetTestState
+}).add('find', {
+  defer: true,
+  fn: function(deferred) {
+    Todo.find({id: (uniqVal++)}, function() {
+      deferred.resolve();
+    });
+  },
+  onComplete: resetTestState
+}).add('update', {
+  defer: true,
+  fn: function(deferred) {
+    Todo.update({id: (uniqVal++)}, {content: 'Catch Pokemon ' + uniqVal}, function() {
+      deferred.resolve();
+    });
+  },
+  onComplete: resetTestState
+}).add('remove', {
+  defer: true,
+  fn: function(deferred) {
+    Todo.remove({id: (uniqVal++)}, function() {
+      deferred.resolve();
+    });
+  },
+  onComplete: resetTestState
+}).on('cycle', function(event) {
+  console.log(String(event.target));
+}).on('complete', function() {
+  console.log('#End ', new Date());
+  //Todo.destroyAll();
+  process.exit();
+}).run({async: true});

@@ -1,11 +1,14 @@
-"use strict";
+'use strict';
+
 // This test written in mocha
 var should = require('./init.js');
 var newId = require('node-uuid').v4();
-var db, Person, person;
+var db;
+var Person;
+var person;
 
-describe('Couchbase query methods', function () {
-  before(function (done) {
+describe('Couchbase query methods', function() {
+  before(function(done) {
     db = getDataSource();
     Person = db.createModel('person', {id: {type: String, id: true}, name: String});
     person = {
@@ -13,18 +16,18 @@ describe('Couchbase query methods', function () {
       name: '_SpecialName'
     };
     //create test document
-    Person.create(person).then(function (person) {
+    Person.create(person).then(function(person) {
       //create view
       var bmanager = db.connector.bucket.manager();
       bmanager.upsertDesignDocument('dev_default', {
         views: {
-          'personName': {
-            map: function (doc, meta) {
+          personName: {
+            map: function(doc, meta) {
               emit(doc.name, doc);
             }
           }
         }
-      }, function (err) {
+      }, function(err) {
         if (err) {
           Person.remove({id: newId});
           console.log('ERROR', err);
@@ -36,7 +39,7 @@ describe('Couchbase query methods', function () {
   });
 
   //QUERY TEST
-  it('query should get result by view function', function (done) {
+  it('query should get result by view function', function(done) {
 
     // todo-chopper: promise style is not working.
     //return db.connector.view('dev_default', 'personName','').then(function (res) {
@@ -44,7 +47,7 @@ describe('Couchbase query methods', function () {
     //}).catch(function (err) {
     //  done(err)
     //})
-    return db.connector.view('dev_default', 'personName', '_SpecialName', function (err, res) {
+    return db.connector.view('dev_default', 'personName', '_SpecialName', function(err, res) {
       if (err) {
         Person.remove({id: newId});
         done(err);
@@ -56,5 +59,3 @@ describe('Couchbase query methods', function () {
     });
   });
 });
-
-
