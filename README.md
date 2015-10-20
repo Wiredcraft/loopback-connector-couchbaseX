@@ -35,6 +35,13 @@ Run your CouchBase Server at 127.0.0.1 first.
 $ mocha test 
 ```
 
+Run benchmark test:
+
+```bash
+$ make benchmarks 
+```
+the results is ./benchmarks/results.md
+
 For detail information:
 
 ```bash

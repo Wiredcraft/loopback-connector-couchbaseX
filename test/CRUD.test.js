@@ -57,9 +57,18 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  //FIND TEST
-  it('find should find a instance by a giving id', function(done) {
-    return Person.findById(persons[0].id).then(function(person) {
+//FIND TEST
+  it('find should find a instance by a giving id', function (done) {
+    return Person.find({id: persons[0].id}).then(function (person) {
+      person[0].value.name.should.eql('Charlie');
+      done();
+    }).catch(function (err) {
+      done(err);
+    });
+  });
+
+  it('findById should find a instance by a giving id', function (done) {
+    return Person.findById(persons[0].id).then(function (person) {
       person.value.name.should.eql('Charlie');
       done();
     }).catch(function(err) {
@@ -67,8 +76,8 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  it('find should find instances by giving ids', function(done) {
-    return Person.findByIds([persons[0].id, persons[1].id]).then(function(person) {
+  it('findByIds should find instances by giving ids', function (done) {
+    return Person.findByIds([persons[0].id, persons[1].id]).then(function (person) {
       person[0][persons[0].id].value.name.should.eql('Charlie');
       person[0][persons[1].id].value.name.should.eql('Mary');
       done();
@@ -86,8 +95,15 @@ describe('Couchbase CRUD methods', function() {
   //   });
   // });
 
-  it('find error with a not exist id', function(done) {
-    return Person.findById(uuid.v4()).then().catch(function(err) {
+  it('find error with a not exist id', function (done) {
+    return Person.find({id: uuid.v4()}).then().catch(function (err) {
+      should.exist(err);
+      done();
+    });
+  });
+
+  it('findById error with a not exist id', function (done) {
+    return Person.findById(uuid.v4()).then().catch(function (err) {
       should.exist(err);
       done();
     });
