@@ -2,5 +2,16 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "ToCouchbase": {
+    "name": "ToCouchbase",
+    "connector": "couchbase3",
+    "cluster": {
+      "url": "localhost"
+    },
+    "bucket": {
+      "name": "test",
+      "password": ""
+    }
   }
 }

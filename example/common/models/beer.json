@@ -6,7 +6,17 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "alcohol": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "string"
+    }
+  },
   "validations": [],
   "relations": {},
   "acls": [],

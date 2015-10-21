@@ -2,11 +2,19 @@
 * npm install loopback-connector-couchbase3 --save
 
 ### Define datasource
-1. $ slc loopback:datasource
-2. Choose **Other** when `Select the connector`
+$ slc loopback:datasource
 
-### Define datasource.json
-in server/datasource.json
+$ ? Enter the data-source name: YourDataSourceName
+
+$ ? Select the connector for couchbase: other
+
+$ ? Enter the connector name without the loopback-connector- prefix: couchbase3
+
+
+### Modify datasource.json
+1.Create a new bucket in your couchbase
+
+2.In **server/datasource.json**
 
 ```
  "yourDatasourceName": {
