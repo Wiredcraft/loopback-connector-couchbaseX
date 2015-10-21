@@ -1,16 +1,11 @@
 {
-  "name": "Lorem",
+  "name": "Test",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
-  "properties": {
-    "nameForTest": {
-      "type": "string",
-      "required": true
-    }
-  },
+  "properties": {},
   "validations": [],
   "relations": {},
   "acls": [],

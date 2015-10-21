@@ -32,8 +32,8 @@
     "dataSource": "db",
     "public": false
   },
-  "Lorem": {
-    "dataSource": "couchbaseDS",
-    "public": true
+  "Test": {
+    "dataSource": "test-connect-couchbase",
+    "public": false
   }
 }

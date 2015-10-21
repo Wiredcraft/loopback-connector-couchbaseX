@@ -3,11 +3,15 @@
     "name": "db",
     "connector": "memory"
   },
-  "couchbaseDS": {
-    "name": "couchbaseDS",
-    "connector": "couchbase",
-    "host": "localhost",
-    "port": 8091,
-    "database": "default"
+  "test-connect-couchbase": {
+    "name": "test-connect-couchbase",
+    "connector": "couchbase3",
+    "cluster": {
+      "url": "localhost"
+    },
+    "bucket": {
+      "name": "test",
+      "password": ""
+    }
   }
 }
