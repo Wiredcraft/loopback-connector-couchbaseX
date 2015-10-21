@@ -3,9 +3,6 @@ var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
 
-// setup custom connector
-app.connector('couchbase', require('../connectors/couchbase'));
-
 app.start = function() {
   // start the web server
   return app.listen(function() {

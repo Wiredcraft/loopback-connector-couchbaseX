@@ -32,8 +32,8 @@
     "dataSource": "db",
     "public": false
   },
-  "Lorem": {
-    "dataSource": "couchbaseDS",
+  "Beer": {
+    "dataSource": "ToCouchbase",
     "public": true
   }
 }

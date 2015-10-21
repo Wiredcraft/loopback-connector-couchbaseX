@@ -1,14 +1,20 @@
 {
-  "name": "Lorem",
+  "name": "Beer",
+  "plural": "beers",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "nameForTest": {
-      "type": "string",
-      "required": true
+    "name": {
+      "type": "string"
+    },
+    "alcohol": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "string"
     }
   },
   "validations": [],
