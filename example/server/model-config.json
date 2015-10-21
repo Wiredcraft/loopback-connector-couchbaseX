@@ -32,8 +32,8 @@
     "dataSource": "db",
     "public": false
   },
-  "Test": {
-    "dataSource": "test-connect-couchbase",
-    "public": false
+  "Beer": {
+    "dataSource": null,
+    "public": true
   }
 }

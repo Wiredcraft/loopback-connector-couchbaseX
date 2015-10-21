@@ -1,5 +1,6 @@
 {
-  "name": "Test",
+  "name": "Beer",
+  "plural": "beers",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {

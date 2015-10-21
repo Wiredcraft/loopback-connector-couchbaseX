@@ -2,16 +2,5 @@
   "db": {
     "name": "db",
     "connector": "memory"
-  },
-  "test-connect-couchbase": {
-    "name": "test-connect-couchbase",
-    "connector": "couchbase3",
-    "cluster": {
-      "url": "localhost"
-    },
-    "bucket": {
-      "name": "test",
-      "password": ""
-    }
   }
 }

@@ -1,5 +1,4 @@
 ### Preinstallation
-* npm install couchbase --save
 * npm install loopback-connector-couchbase3 --save
 
 ### Define datasource
@@ -17,7 +16,7 @@ in server/datasource.json
       "url": "localhost"
     },
     "bucket": {
-      "name": "test",
+      "name": "yourBucketName",
       "password": ""
     }
   }
