@@ -10,13 +10,13 @@ var config = require('rc')('loopback', {
     couchbase: {
 
       //demo config
-      cluster:{
-        url:'couchbase://127.0.0.1',
-        options:{}
+      cluster: {
+        url: 'couchbase://127.0.0.1',
+        options: {}
       },
-      bucket:{
-        name:'default',
-        password:''
+      bucket: {
+        name: 'default',
+        password: ''
       }
 
     }
