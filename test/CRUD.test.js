@@ -59,8 +59,31 @@ describe('Couchbase CRUD methods', function() {
 
   //FIND TEST
   it('find should find a instance by a giving id', function(done) {
-    return Person.find({id: persons[0].id}).then(function(person) {
+    return Person.find({where: {id: persons[0].id}}).then(function(person) {
       person[0].value.name.should.eql('Charlie');
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  // it('find should find a instance (filter)', function(done) {
+  //   return Person.find({
+  //     where: {age: 24},
+  //     order: 'name DESC',
+  //     limit: 3,
+  //     skip: 10
+  //   }).then(function(person) {
+  //     person[0].value.name.should.eql('Charlie');
+  //     done();
+  //   }).catch(function(err) {
+  //     done(err);
+  //   });
+  // });
+
+  it('find should find one instance by a giving id', function(done) {
+    return Person.findOne({where: {id: persons[0].id}}).then(function(person) {
+      person.value.name.should.eql('Charlie');
       done();
     }).catch(function(err) {
       done(err);
@@ -85,15 +108,6 @@ describe('Couchbase CRUD methods', function() {
       done(err);
     });
   });
-
-  // it('find should find a instance (filter)', function(done) {
-  //   return Person.find({where:{age:24}}).then(function(person) {
-  //     person[0].value.name.should.eql('Charlie');
-  //     done();
-  //   }).catch(function(err) {
-  //     done(err);
-  //   });
-  // });
 
   it('find error with a not exist id', function(done) {
     return Person.find({id: uuid.v4()}).then().catch(function(err) {
@@ -127,9 +141,8 @@ describe('Couchbase CRUD methods', function() {
 
   it('update should create a exist instance if it not exist', function(done) {
     var newDocId = uuid.v4();
-    return Person.update({
-      id: newDocId
-    }, {
+    return Person.updateOrCreate({
+      id: newDocId,
       name: 'Henry'
     }).then(function() {
       Person.findById(newDocId).then(function(person) {
