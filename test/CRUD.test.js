@@ -5,35 +5,31 @@ var db;
 var Person;
 var persons;
 
-describe('Couchbase CRUD methods', function() {
-  before(function(done) {
-    db = getDataSource();
-    Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
-    persons = [
-      {
-        id: '1',
-        name: 'Charlie',
-        age: 24
-      },
-      {
-        id: '2',
-        name: 'Mary',
-        age: 24
-      },
-      {
-        id: '3',
-        name: 'David',
-        age: 24
-      },
-      {
-        name: 'Jason',
-        age: 44
-      }
-    ];
-    done();
-  });
+db = getDataSource();
+Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
+persons = [
+  {
+    id: '1',
+    name: 'Charlie',
+    age: 24
+  },
+  {
+    id: '2',
+    name: 'Mary',
+    age: 24
+  },
+  {
+    id: '3',
+    name: 'David',
+    age: 24
+  },
+  {
+    name: 'Jason',
+    age: 44
+  }
+];
 
-  //CREATE TEST
+describe('Couchbase CREATE TEST', function() {
   it('create should create new document with giving id', function(done) {
     return Person.create(persons[0]).then(function(person) {
       person.name.should.equal('Charlie');
@@ -61,8 +57,9 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
+});
 
-  //SAVE TEST
+describe('Couchbase SAVE TEST', function() {
   it('save/create one instace by its prototype method', function(done) {
     var person = Person(persons[2]);
     return person.save().then(function(person) {
@@ -103,8 +100,9 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
+});
 
-  //FIND TEST
+describe('Couchbase FIND TEST', function() {
   it('find should find a instance by a giving id', function(done) {
     return Person.find({where: {id: persons[0].id}}).then(function(person) {
       person[0].value.name.should.eql('Charlie');
@@ -114,21 +112,7 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  // it('find should find a instance (filter)', function(done) {
-  //   return Person.find({
-  //     where: {age: 24},
-  //     order: 'name DESC',
-  //     limit: 3,
-  //     skip: 10
-  //   }).then(function(person) {
-  //     person[0].value.name.should.eql('Charlie');
-  //     done();
-  //   }).catch(function(err) {
-  //     done(err);
-  //   });
-  // });
-
-  it('find should find one instance by a giving id', function(done) {
+  it('findOne should find a instance by a giving id', function(done) {
     return Person.findOne({where: {id: persons[0].id}}).then(function(person) {
       person.value.name.should.eql('Charlie');
       done();
@@ -169,8 +153,9 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
+});
 
-  //UPDATE TEST
+describe('Couchbase UPDATE TEST', function() {
   it('update should update a instance if it exist', function(done) {
     return Person.update({
       id: persons[0].id
@@ -200,8 +185,9 @@ describe('Couchbase CRUD methods', function() {
       done(err);
     });
   });
+});
 
-  //DESTROY TEST
+describe('Couchbase DESTROY TEST', function() {
   it('remove one exist document with removeById()', function(done) {
     return Person.removeById(persons[0].id).then(function() {
       done();
@@ -248,5 +234,4 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
-
 });
