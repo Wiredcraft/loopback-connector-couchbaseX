@@ -11,7 +11,7 @@ var config = require('rc')('loopback', {
 
       //demo config
       cluster: {
-        url: 'couchbase://127.0.0.1',
+        url: 'couchbase://localhost',
         options: {}
       },
       bucket: {
