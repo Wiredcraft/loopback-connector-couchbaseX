@@ -5,30 +5,31 @@ var db;
 var Person;
 var persons;
 
-describe('Couchbase CRUD methods', function() {
-  before(function(done) {
-    db = getDataSource();
-    Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
-    persons = [
-      {
-        id: '1',
-        name: 'Charlie',
-        age: 24
-      },
-      {
-        id: '2',
-        name: 'Mary',
-        age: 24
-      },
-      {
-        name: 'Jason',
-        age: 44
-      }
-    ];
-    done();
-  });
+db = getDataSource();
+Person = db.createModel('person', {id: {type: String, id: true}, name: String, age: Number});
+persons = [
+  {
+    id: '1',
+    name: 'Charlie',
+    age: 24
+  },
+  {
+    id: '2',
+    name: 'Mary',
+    age: 24
+  },
+  {
+    id: '3',
+    name: 'David',
+    age: 24
+  },
+  {
+    name: 'Jason',
+    age: 44
+  }
+];
 
-  //CREATE TEST
+describe('Couchbase CREATE TEST', function() {
   it('create should create new document with giving id', function(done) {
     return Person.create(persons[0]).then(function(person) {
       person.name.should.equal('Charlie');
@@ -42,7 +43,7 @@ describe('Couchbase CRUD methods', function() {
   });
 
   it('create should create new document without giving id', function(done) {
-    return Person.create(persons[2]).then(function(person) {
+    return Person.create(persons[3]).then(function(person) {
       person.name.should.equal('Jason');
       done();
     }).catch(function(err) {
@@ -56,11 +57,64 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
+});
 
-  //FIND TEST
+describe('Couchbase SAVE TEST', function() {
+  it('save/create one instace by its prototype method', function(done) {
+    var person = Person(persons[2]);
+    return person.save().then(function(person) {
+      person.name.should.eql('David');
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('save/create one instace without giving id', function(done) {
+    var person = Person(persons[3]);
+    return person.save().then(function(person) {
+      person.name.should.equal('Jason');
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('save a exist instace after changed', function(done) {
+    return Person.findOne({where: {id: persons[2].id}}).then(function(person) {
+      person.value.name.should.eql('David');
+      person.value.name = 'Charlie';
+      person.save().then(function(person) {
+        person.value.name.should.eql('Charlie');
+        done();
+      });
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('save/create error with exist id', function(done) {
+    var person = Person(persons[2]);
+    return person.save().then().catch(function(err) {
+      should.exist(err);
+      done();
+    });
+  });
+});
+
+describe('Couchbase FIND TEST', function() {
   it('find should find a instance by a giving id', function(done) {
-    return Person.find({id: persons[0].id}).then(function(person) {
+    return Person.find({where: {id: persons[0].id}}).then(function(person) {
       person[0].value.name.should.eql('Charlie');
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('findOne should find a instance by a giving id', function(done) {
+    return Person.findOne({where: {id: persons[0].id}}).then(function(person) {
+      person.value.name.should.eql('Charlie');
       done();
     }).catch(function(err) {
       done(err);
@@ -86,15 +140,6 @@ describe('Couchbase CRUD methods', function() {
     });
   });
 
-  // it('find should find a instance (filter)', function(done) {
-  //   return Person.find({where:{age:24}}).then(function(person) {
-  //     person[0].value.name.should.eql('Charlie');
-  //     done();
-  //   }).catch(function(err) {
-  //     done(err);
-  //   });
-  // });
-
   it('find error with a not exist id', function(done) {
     return Person.find({id: uuid.v4()}).then().catch(function(err) {
       should.exist(err);
@@ -108,8 +153,9 @@ describe('Couchbase CRUD methods', function() {
       done();
     });
   });
+});
 
-  //UPDATE TEST
+describe('Couchbase UPDATE TEST', function() {
   it('update should update a instance if it exist', function(done) {
     return Person.update({
       id: persons[0].id
@@ -127,9 +173,8 @@ describe('Couchbase CRUD methods', function() {
 
   it('update should create a exist instance if it not exist', function(done) {
     var newDocId = uuid.v4();
-    return Person.update({
-      id: newDocId
-    }, {
+    return Person.updateOrCreate({
+      id: newDocId,
       name: 'Henry'
     }).then(function() {
       Person.findById(newDocId).then(function(person) {
@@ -140,31 +185,53 @@ describe('Couchbase CRUD methods', function() {
       done(err);
     });
   });
+});
 
-  //DESTROY TEST
-  it('remove one exist document by id', function(done) {
+describe('Couchbase DESTROY TEST', function() {
+  it('remove one exist document with removeById()', function(done) {
     return Person.removeById(persons[0].id).then(function() {
-      Person.removeById(persons[1].id).then(function() {
-        done();
-      });
+      done();
     }).catch(function(err) {
       done(err);
     });
   });
 
-  // it('remove one exist document(where)', function(done) {
-  //  return Person.remove({name: 'Jason'}).then(function() {
-  //    done();
-  //  }).catch(function(err) {
-  //    done(err);
-  //  });
-  // });
+  it('remove one exist document with remove()', function(done) {
+    return Person.remove({id: persons[1].id}).then(function() {
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
 
-  it('destroy error when unmatched documnet', function(done) {
+  it('remove one instace by its prototype method', function(done) {
+    var person = Person(persons[2]);
+    return person.remove().then(function(person) {
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('remove error by its prototype method when instace doesn\'t exist', function(done) {
+    var person = Person(persons[2]);
+    return person.remove().then().catch(function(err) {
+      should.exist(err);
+      done();
+    });
+  });
+
+  it('remove error when use remove() with unmatched documnet', function(done) {
     return Person.remove({id: uuid.v4()}).then().catch(function(err) {
       should.exist(err);
       done();
     });
   });
 
+  it('remove error when use removeById() with unmatched documnet', function(done) {
+    return Person.removeById(uuid.v4()).then().catch(function(err) {
+      should.exist(err);
+      done();
+    });
+  });
 });
