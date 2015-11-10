@@ -6,8 +6,9 @@
 
 node_modules
 
-/test
+/backup
 /example
+/test
 
 /*.js
 !/index.js
