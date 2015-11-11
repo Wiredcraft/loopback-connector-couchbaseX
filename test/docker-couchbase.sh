@@ -21,7 +21,7 @@ docker pull $COUCHBASE
 
 docker run --name CONTAINER -d -p 8091:8091 -p 8092:8092 -p 11207:11207 -p 11210:11210 $COUCHBASE
 
-CONTAINER_IP=`docker inspect CONTAINER | grep -i IPAddress | awk -F: '{print $2}' |  grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"`
+CONTAINER_IP=`docker inspect --format '{{ .NetworkSettings.IPAddress }}' CONTAINER`
 
 while true; do
   try
