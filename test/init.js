@@ -13,7 +13,7 @@ var config = require('rc')('loopback', {
         options: {}
       },
       bucket: {
-        name: 'test',
+        name: 'test_bucket',
         password: ''
       }
     }
