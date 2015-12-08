@@ -20,13 +20,6 @@ var config = require('rc')('loopback', {
   }
 }).test.couchbase;
 
-if (process.env.CI) {
-  config = {
-    // TODO
-
-  };
-}
-
 global.getDataSource = global.getSchema = function(customConfig, callback) {
   if (callback == null) {
     callback = noop;
