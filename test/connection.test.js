@@ -5,6 +5,12 @@ describe('Couchbase connector', function() {
   var db;
   var connector;
 
+  after(function(done) {
+    connector.manager().call('flushAsync').then(function() {
+      done();
+    }, done);
+  });
+
   it('can connect.', function(done) {
     db = getDataSource({}, function(err, res) {
       if (err) return done(err);

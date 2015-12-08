@@ -8,17 +8,14 @@ function noop(err, res) {}
 var config = require('rc')('loopback', {
   test: {
     couchbase: {
-
-      //demo config
       cluster: {
         url: 'couchbase://localhost',
         options: {}
       },
       bucket: {
-        name: 'default',
+        name: 'test',
         password: ''
       }
-
     }
   }
 }).test.couchbase;
