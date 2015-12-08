@@ -12,7 +12,7 @@ describe('Couchbase connector', function() {
   });
 
   it('can connect.', function(done) {
-    db = getDataSource({}, function(err, res) {
+    db = getDataSource(null, function(err, res) {
       if (err) return done(err);
       res.should.be.type('object');
       res.should.have.property('connected', true);

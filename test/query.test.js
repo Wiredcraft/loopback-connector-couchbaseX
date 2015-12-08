@@ -12,7 +12,7 @@ describe('Couchbase query methods', function() {
   var person;
 
   before(function(done) {
-    db = getDataSource({}, done);
+    db = getDataSource(null, done);
     connector = db.connector;
     Person = db.createModel('person', {
       id: {

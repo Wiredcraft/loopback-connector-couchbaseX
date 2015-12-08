@@ -10,7 +10,7 @@ describe('Couchbase CRUD', function() {
   var persons;
 
   before(function(done) {
-    db = getDataSource({}, done);
+    db = getDataSource(null, done);
     connector = db.connector;
     Person = db.createModel('person', {
       id: {
