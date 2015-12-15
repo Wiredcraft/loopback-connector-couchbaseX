@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
-    "jscs": "^2.6.0",
-    "loopback-datasource-juggler": "^2.43.0",
+    "jscs": "^2.7.0",
+    "loopback-datasource-juggler": "^2.44.0",
     "mocha": "^2.0.0",
     "rc": "^1.0.0",
     "should": "^8.0.0",

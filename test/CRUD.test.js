@@ -38,15 +38,14 @@ describe('Couchbase CRUD', function() {
     }];
   });
 
-  after(function(done) {
-    connector.manager().call('flushAsync').then(function() {
-      done();
-    }, done);
-  });
+  describe('Create', function() {
+    after(function(done) {
+      connector.manager().call('flushAsync').then(function() {
+        done();
+      }, done);
+    });
 
-  describe('Couchbase CREATE TEST', function() {
-
-    it('create should create new document with giving id', function(done) {
+    it('can create an instance with an id', function(done) {
       return Person.create(persons[0]).then(function(person) {
         person.id.should.equal('1');
         person.name.should.equal('Charlie');
@@ -54,15 +53,7 @@ describe('Couchbase CRUD', function() {
       }).catch(done);
     });
 
-    it('create should create new document with giving id', function(done) {
-      return Person.create(persons[1]).then(function(person) {
-        person.id.should.equal('2');
-        person.name.should.equal('Mary');
-        done();
-      }).catch(done);
-    });
-
-    it('create should create new document without giving id', function(done) {
+    it('can create an instance without an id', function(done) {
       return Person.create(persons[3]).then(function(person) {
         person.id.should.be.String();
         person.name.should.equal('Jason');
@@ -70,185 +61,171 @@ describe('Couchbase CRUD', function() {
       }).catch(done);
     });
 
-    it('create error with existing id ', function(done) {
-      return Person.create(persons[0]).then(function(res) {
+    it('cannot create with a duplicate id ', function(done) {
+      return Person.create(persons[0]).then(function() {
         done(new Error('expected an error'));
       }, function(err) {
         should.exist(err);
         done();
       });
     });
+
+    // TODO: more errors
   });
 
-  describe('Couchbase SAVE TEST', function() {
-    it('save/create one instace by its prototype method', function(done) {
+  describe('Find by ID', function() {
+    before(function(done) {
+      Person.create(persons[0]).then(function() {
+        done();
+      }, done);
+    });
+
+    after(function(done) {
+      connector.manager().call('flushAsync').then(function() {
+        done();
+      }, done);
+    });
+
+    it('can find a saved instance', function(done) {
+      Person.findById('1').then(function(person) {
+        person.should.be.Object();
+        person.id.should.equal('1');
+        person.name.should.equal('Charlie');
+        person.age.should.equal(24);
+        done();
+      }).catch(done);
+    });
+
+    it('cannot find an unsaved instance', function(done) {
+      Person.findById('2').then(function() {
+        done(new Error('expected an error'));
+      }, function(err) {
+        should.exist(err);
+        done();
+      });
+    });
+
+    // TODO: more errors
+  });
+
+  describe('Destroy', function() {
+    before(function(done) {
+      Person.create(persons[0]).then(function() {
+        done();
+      }, done);
+    });
+
+    after(function(done) {
+      connector.manager().call('flushAsync').then(function() {
+        done();
+      }, done);
+    });
+
+    it('can destroy a saved instance', function(done) {
+      var person = Person(persons[0]);
+      return person.remove().then(function(res) {
+        res.should.be.Object().with.property('count', 1);
+        done();
+      }).catch(done);
+    });
+
+    it('cannot destroy an unsaved instance', function(done) {
       var person = Person(persons[2]);
-      return person.save().then(function(person) {
-        person.name.should.eql('David');
+      return person.remove().then(function() {
+        done(new Error('expected an error'));
+      }, function(err) {
+        should.exist(err);
+        done();
+      });
+    });
+
+    // TODO: more errors
+  });
+
+  describe('Update or Create', function() {
+    before(function(done) {
+      Person.create(persons[0]).then(function() {
         done();
       }, done);
     });
 
-    it('save/create one instace without giving id', function(done) {
-      var person = Person(persons[3]);
-      return person.save().then(function(person) {
-        person.name.should.equal('Jason');
+    after(function(done) {
+      connector.manager().call('flushAsync').then(function() {
         done();
       }, done);
     });
 
-    it('save a exist instace after changed', function(done) {
-      return Person.findOne({
-        where: {
-          id: persons[2].id
-        }
-      }).then(function(person) {
-        person.value.name.should.eql('David');
-        person.value.name = 'Charlie';
-        person.save().then(function(person) {
-          person.value.name.should.eql('Charlie');
+    it('can update an instance', function(done) {
+      Person.updateOrCreate({
+        id: '1',
+        name: 'Charlie II',
+        age: 24
+      }).then(function(res) {
+        res.should.be.Object();
+        res.should.have.property('id', '1');
+        res.should.have.property('name', 'Charlie II');
+        res.should.have.property('age', 24);
+        done();
+      }).catch(done);
+    });
+
+    it('can create an instance', function(done) {
+      Person.updateOrCreate(persons[1]).then(function(res) {
+        res.should.be.Object();
+        res.should.have.property('id', '2');
+        res.should.have.property('name', 'Mary');
+        res.should.have.property('age', 24);
+        done();
+      }).catch(done);
+    });
+
+    // TODO: more errors
+  });
+
+  describe('Save', function() {
+    before(function(done) {
+      Person.create(persons[0]).then(function() {
+        done();
+      }, done);
+    });
+
+    after(function(done) {
+      connector.manager().call('flushAsync').then(function() {
+        done();
+      }, done);
+    });
+
+    it('can update an instance', function(done) {
+      var person = Person.findById('1').then(function(person) {
+        person.name = 'Charlie II';
+        person.save().then(function(res) {
+          res.should.be.Object();
+          res.should.have.property('id', '1');
+          res.should.have.property('name', 'Charlie II');
+          res.should.have.property('age', 24);
           done();
         });
-      }, done);
+      }).catch(done);
     });
 
-    it('save/create error with exist id', function(done) {
-      var person = Person(persons[2]);
-      return person.save().then().catch(function(err) {
-        should.exist(err);
+    it('can create an instance', function(done) {
+      var person = Person(persons[1]);
+      person.save().then(function(res) {
+        res.should.be.Object();
+        res.should.have.property('id', '2');
+        res.should.have.property('name', 'Mary');
+        res.should.have.property('age', 24);
         done();
-      });
+      }).catch(done);
     });
+
+    // TODO: more errors
   });
 
-  describe('Couchbase FIND TEST', function() {
-    it('find should find a instance by a giving id', function(done) {
-      return Person.find({
-        where: {
-          id: persons[0].id
-        }
-      }).then(function(person) {
-        person[0].value.name.should.eql('Charlie');
-        done();
-      }, done);
-    });
+  describe('Find multiple', function() {});
 
-    it('findOne should find a instance by a giving id', function(done) {
-      return Person.findOne({
-        where: {
-          id: persons[0].id
-        }
-      }).then(function(person) {
-        person.value.name.should.eql('Charlie');
-        done();
-      }, done);
-    });
+  describe('Update multiple', function() {});
 
-    it('findById should find a instance by a giving id', function(done) {
-      return Person.findById(persons[0].id).then(function(person) {
-        person.value.name.should.eql('Charlie');
-        done();
-      }, done);
-    });
-
-    it('findByIds should find instances by giving ids', function(done) {
-      return Person.findByIds([persons[0].id, persons[1].id]).then(function(person) {
-        person[0][persons[0].id].value.name.should.eql('Charlie');
-        person[0][persons[1].id].value.name.should.eql('Mary');
-        done();
-      }, done);
-    });
-
-    it('find error with a not exist id', function(done) {
-      return Person.find({
-        id: uuid.v4()
-      }).then().catch(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-
-    it('findById error with a not exist id', function(done) {
-      return Person.findById(uuid.v4()).then().catch(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-  });
-
-  describe('Couchbase UPDATE TEST', function() {
-    it('update should update a instance if it exist', function(done) {
-      return Person.update({
-        id: persons[0].id
-      }, {
-        age: 37
-      }).then(function() {
-        Person.findById(persons[0].id).then(function(person) {
-          person.value.age.should.eql(37);
-          done();
-        });
-      }, done);
-    });
-
-    it('update should create a exist instance if it not exist', function(done) {
-      var newDocId = uuid.v4();
-      return Person.updateOrCreate({
-        id: newDocId,
-        name: 'Henry'
-      }).then(function() {
-        Person.findById(newDocId).then(function(person) {
-          person.value.name.should.eql('Henry');
-          done();
-        });
-      }, done);
-    });
-  });
-
-  describe('Couchbase DESTROY TEST', function() {
-    it('remove one exist document with removeById()', function(done) {
-      return Person.removeById(persons[0].id).then(function() {
-        done();
-      }, done);
-    });
-
-    it('remove one exist document with remove()', function(done) {
-      return Person.remove({
-        id: persons[1].id
-      }).then(function() {
-        done();
-      }, done);
-    });
-
-    it('remove one instace by its prototype method', function(done) {
-      var person = Person(persons[2]);
-      return person.remove().then(function(person) {
-        done();
-      }, done);
-    });
-
-    it('remove error by its prototype method when instace doesn\'t exist', function(done) {
-      var person = Person(persons[2]);
-      return person.remove().then().catch(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-
-    it('remove error when use remove() with unmatched documnet', function(done) {
-      return Person.remove({
-        id: uuid.v4()
-      }).then().catch(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-
-    it('remove error when use removeById() with unmatched documnet', function(done) {
-      return Person.removeById(uuid.v4()).then().catch(function(err) {
-        should.exist(err);
-        done();
-      });
-    });
-  });
+  describe('Destroy multiple', function() {});
 
 });
