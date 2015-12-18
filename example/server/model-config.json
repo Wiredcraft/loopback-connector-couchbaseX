@@ -33,7 +33,7 @@
     "public": false
   },
   "Beer": {
-    "dataSource": "ToCouchbase",
+    "dataSource": "couchbaseTestBucket",
     "public": true
   }
 }

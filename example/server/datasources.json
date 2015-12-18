@@ -3,14 +3,15 @@
     "name": "db",
     "connector": "memory"
   },
-  "ToCouchbase": {
-    "name": "ToCouchbase",
+  "couchbaseTestBucket": {
+    "name": "couchbaseTestBucket",
     "connector": "couchbase3",
     "cluster": {
-      "url": "localhost"
+      "url": "couchbase://localhost",
+      "options": {}
     },
     "bucket": {
-      "name": "test",
+      "name": "test_bucket",
       "password": ""
     }
   }
