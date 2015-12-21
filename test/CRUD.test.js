@@ -1,4 +1,3 @@
-// This test written in mocha
 var should = require('./init.js');
 var uuid = require('node-uuid');
 

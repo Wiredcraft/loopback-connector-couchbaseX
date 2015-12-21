@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.1",
     "jscs": "^2.7.0",
     "loopback-datasource-juggler": "^2.44.0",
     "mocha": "^2.0.0",
@@ -47,6 +49,6 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "jscs */*.js && make test"
+    "test": "make test"
   }
 }
