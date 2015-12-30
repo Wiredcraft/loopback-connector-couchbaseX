@@ -73,8 +73,17 @@ describe('Couchbase CRUD', function() {
   });
 
   describe('Find by ID', function() {
+    var id3;
+
     before(function(done) {
       Person.create(persons[0]).then(function() {
+        done();
+      }, done);
+    });
+
+    before(function(done) {
+      Person.create(persons[3]).then(function(person) {
+        id3 = person.id;
         done();
       }, done);
     });
@@ -91,6 +100,16 @@ describe('Couchbase CRUD', function() {
         person.id.should.equal('0');
         person.name.should.equal('Charlie');
         person.age.should.equal(24);
+        done();
+      }).catch(done);
+    });
+
+    it('can find a saved instance', function(done) {
+      Person.findById(id3).then(function(person) {
+        person.should.be.Object();
+        person.id.should.equal(id3);
+        person.name.should.equal('Jason');
+        person.age.should.equal(44);
         done();
       }).catch(done);
     });
