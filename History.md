@@ -1,4 +1,11 @@
 
+0.2.1 / 2015-12-30
+==================
+
+  * Fixed that the generated ID wasn't set back to model instance.
+  * Update README.md
+  * Setting up coveralls.io
+
 0.2.0 / 2015-12-17
 ==================
 

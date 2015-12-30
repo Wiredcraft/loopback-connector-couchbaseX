@@ -38,13 +38,13 @@ npm install loopback-connector-couchbase3 --save
  project  : loopback-connector-couchbase3
  repo age : 4 months
  active   : 33 days
- commits  : 67
+ commits  : 71
  files    : 34
  authors  :
-    33  Makara Wang        49.3%
-    23  CCharlieLi         34.3%
-     4  chopperlee         6.0%
-     3  Leo Zhou           4.5%
-     3  wwayne             4.5%
-     1  greenkeeperio-bot  1.5%
+    37  Makara Wang        52.1%
+    23  CCharlieLi         32.4%
+     4  chopperlee         5.6%
+     3  Leo Zhou           4.2%
+     3  wwayne             4.2%
+     1  greenkeeperio-bot  1.4%
 ```
