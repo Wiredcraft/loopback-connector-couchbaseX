@@ -36,7 +36,7 @@
     "node-uuid": "^1.4.0"
   },
   "devDependencies": {
-    "benchmark": "^1.0.0",
+    "benchmark": "^2.0.0",
     "coveralls": "^2.11.0",
     "istanbul": "^0.4.0",
     "jscs": "^2.7.0",
