@@ -4,6 +4,7 @@
 *.orig
 
 /backup
+/benchmarks
 /example
 /test
 

@@ -22,7 +22,11 @@ var config = require('rc')('loopback', {
 }).test.couchbase;
 
 var ds = new DataSource(connector, config);
-var Todo = ds.createModel('Todo', {content: {type: String}});
+var Todo = ds.createModel('Todo', {
+  content: {
+    type: String
+  }
+});
 
 var uniqVal = 0;
 
@@ -37,7 +41,10 @@ suite.on('start', function() {
 }).add('create', {
   defer: true,
   fn: function(deferred) {
-    Todo.create({content: 'Catch Pokemon ' + uniqVal, id: (uniqVal++)}, function() {
+    Todo.create({
+      content: 'Catch Pokemon ' + uniqVal,
+      id: (uniqVal++)
+    }, function() {
       deferred.resolve();
     });
   },
@@ -45,7 +52,9 @@ suite.on('start', function() {
 }).add('find', {
   defer: true,
   fn: function(deferred) {
-    Todo.find({id: (uniqVal++)}, function() {
+    Todo.find({
+      id: (uniqVal++)
+    }, function() {
       deferred.resolve();
     });
   },
@@ -53,7 +62,11 @@ suite.on('start', function() {
 }).add('update', {
   defer: true,
   fn: function(deferred) {
-    Todo.update({id: (uniqVal++)}, {content: 'Catch Pokemon ' + uniqVal}, function() {
+    Todo.update({
+      id: (uniqVal++)
+    }, {
+      content: 'Catch Pokemon ' + uniqVal
+    }, function() {
       deferred.resolve();
     });
   },
@@ -61,7 +74,9 @@ suite.on('start', function() {
 }).add('remove', {
   defer: true,
   fn: function(deferred) {
-    Todo.remove({id: (uniqVal++)}, function() {
+    Todo.remove({
+      id: (uniqVal++)
+    }, function() {
       deferred.resolve();
     });
   },
@@ -72,4 +87,6 @@ suite.on('start', function() {
   console.log('#End ', new Date());
   //Todo.destroyAll();
   process.exit();
-}).run({async: true});
+}).run({
+  async: true
+});
