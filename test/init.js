@@ -20,18 +20,18 @@ var config = require('rc')('loopback', {
   }
 }).test.couchbase;
 
-global.getDataSource = global.getSchema = function(customConfig, callback) {
+global.getDataSource = global.getSchema = function (customConfig, callback) {
   if (callback == null) {
     callback = noop;
   }
   var builder = new ModelBuilder();
   var db = new DataSource(require('../'), customConfig || config);
 
-  db.log = function(a) {
+  db.log = function (a) {
     console.log(a);
   };
 
-  db.on('connected', function() {
+  db.on('connected', function () {
     callback(null, db);
   });
 
