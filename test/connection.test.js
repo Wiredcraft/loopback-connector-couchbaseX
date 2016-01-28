@@ -60,4 +60,36 @@ describe('Couchbase connector', function () {
     connector.disconnect(done);
   });
 
+  it('can do pingpong with promise style when connected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      connector = res.connector;
+      connector.connect();
+      connector.ping()
+        .then(function (res) {
+          res.should.be.ok;
+          done();
+        }).catch(done);
+    });
+  });
+
+  it('can do pingpong with callback style when connected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      connector = res.connector;
+      connector.connect();
+      connector.ping(function (err, res) {
+        if (err) done(err);
+        res.should.be.ok;
+        done();
+      });
+    });
+  });
+
+  it('can not response ping when disconnected', function (done) {
+    connector.disconnect(function (err, res) {
+      connector.ping()
+        .catch(done());
+    });
+  });
 });
