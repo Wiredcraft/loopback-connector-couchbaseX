@@ -86,10 +86,50 @@ describe('Couchbase connector', function () {
     });
   });
 
-  it('can not response ping when disconnected', function (done) {
-    connector.disconnect(function (err, res) {
-      connector.ping()
-        .catch(done());
+  it('can not response ping with promise style when disconnected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      connector = res.connector;
+      connector.disconnect(function (err, res) {
+        connector.ping()
+          .catch(function (err) {
+            should.exist(err);
+            done();
+          });
+      });
+    });
+  });
+
+  it('can not response ping with callback style when disconnected', function (done) {
+    getDataSource(null, function (err, res) {
+      connector = res.connector;
+      connector.disconnect(function (err, res) {
+        connector.ping(function (err, res) {
+          should.exist(err);
+          done();
+        });
+      });
+    });
+  });
+
+  it('can not response ping with when bucket connected but crashed', function (done) {
+    this.timeout(50000);
+    getDataSource(null, function (err, res) {
+      connector = res.connector;
+      connector.connect();
+      connector.clusterManager('Administrator', 'password')
+        .then(function (clusterManager) {
+          clusterManager.removeBucket('test_bucket', function (err, res) {
+            if (err) {
+              clusterManager.createBucket('test_bucket', function (err, res) {
+                done(err);
+              });
+            }
+            connector.ping(function (err, res) {
+              should.exist(err);
+              done();
+            });
+          });
+        });
     });
   });
 });
