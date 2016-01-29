@@ -51,9 +51,9 @@ fi
 docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
   bucket-create -c "$CONTAINER_IP:8091" -u Administrator -p password \
   --bucket=test_bucket --bucket-type=couchbase --bucket-port=11211 \
-  --bucket-ramsize=256 --bucket-replica=1 --enable-flush=1 --wait
+  --bucket-ramsize=100 --bucket-replica=1 --enable-flush=1 --wait
 
 docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
   bucket-create -c "$CONTAINER_IP:8091" -u Administrator -p password \
-  --bucket=test_ping --bucket-type=couchbase --bucket-port=11211 \
-  --bucket-ramsize=256 --bucket-replica=1 --enable-flush=1 --wait
+  --bucket=test_ping --bucket-type=couchbase --bucket-port=11212 \
+  --bucket-ramsize=100 --bucket-replica=1 --enable-flush=1 --wait

@@ -113,18 +113,22 @@ describe('Couchbase connector', function () {
 
   it('can not response ping with when bucket connected but crashed', function (done) {
     this.timeout(50000);
-    getDataSource(null, function (err, res) {
-      connector = res.connector;
-      connector.connect();
-      connector.clusterManager('Administrator', 'password')
+    getDataSource({
+      cluster: {
+        url: 'couchbase://localhost',
+        options: {}
+      },
+      bucket: {
+        name: 'test_ping',
+        password: ''
+      }
+    }, function (err, res) {
+      var pingConnector = res.connector;
+      pingConnector.connect();
+      pingConnector.clusterManager('Administrator', 'password')
         .then(function (clusterManager) {
-          clusterManager.removeBucket('test_bucket', function (err, res) {
-            if (err) {
-              clusterManager.createBucket('test_bucket', function (err, res) {
-                done(err);
-              });
-            }
-            connector.ping(function (err, res) {
+          clusterManager.removeBucket('test_ping', function (err, res) {
+            pingConnector.ping(function (err, res) {
               should.exist(err);
               done();
             });
