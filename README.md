@@ -32,6 +32,11 @@ npm install loopback-connector-couchbase3 --save
 }
 ```
 
+## Test
+
+precheck: couchbase server is runing with two buckets named `test_bucket`, `test_ping` and enabled its flush feature.
+run: `npm test`
+
 ## Git Summary
 
 ```

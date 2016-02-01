@@ -60,4 +60,80 @@ describe('Couchbase connector', function () {
     connector.disconnect(done);
   });
 
+  it('can do pingpong with promise style when connected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      connector = res.connector;
+      connector.connect();
+      connector.ping()
+        .then(function (res) {
+          res.should.be.ok;
+          done();
+        }).catch(done);
+    });
+  });
+
+  it('can do pingpong with callback style when connected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      connector = res.connector;
+      connector.connect();
+      connector.ping(function (err, res) {
+        if (err) done(err);
+        res.should.be.ok;
+        done();
+      });
+    });
+  });
+
+  it('can not response ping with promise style when disconnected', function (done) {
+    db = getDataSource(null, function (err, res) {
+      connector = res.connector;
+      connector.disconnect(function (err, res) {
+        connector.ping()
+          .catch(function (err) {
+            should.exist(err);
+            done();
+          });
+      });
+    });
+  });
+
+  it('can not response ping with callback style when disconnected', function (done) {
+    getDataSource(null, function (err, res) {
+      connector = res.connector;
+      connector.disconnect(function (err, res) {
+        connector.ping(function (err, res) {
+          should.exist(err);
+          done();
+        });
+      });
+    });
+  });
+
+  it('can not response ping with when bucket connected but crashed', function (done) {
+    this.timeout(50000);
+    getDataSource({
+      cluster: {
+        url: 'couchbase://localhost',
+        options: {}
+      },
+      bucket: {
+        name: 'test_ping',
+        password: ''
+      }
+    }, function (err, res) {
+      var pingConnector = res.connector;
+      pingConnector.connect();
+      pingConnector.clusterManager('Administrator', 'password')
+        .then(function (clusterManager) {
+          clusterManager.removeBucket('test_ping', function (err, res) {
+            pingConnector.ping(function (err, res) {
+              should.exist(err);
+              done();
+            });
+          });
+        });
+    });
+  });
 });
