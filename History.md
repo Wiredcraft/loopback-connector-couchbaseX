@@ -1,4 +1,12 @@
 
+0.2.2 / 2016-02-01
+==================
+
+  * add clusterManager() method and test case for bucket crashed
+  * add ping method
+  * Satisfy JSCS 2.9.
+  * Fixed coding styles.
+
 0.2.1 / 2015-12-30
 ==================
 
