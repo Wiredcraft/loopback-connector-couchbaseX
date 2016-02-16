@@ -39,5 +39,3 @@ global.getDataSource = global.getSchema = function (customConfig, callback) {
 
   return db;
 };
-
-global.sinon = require('sinon');

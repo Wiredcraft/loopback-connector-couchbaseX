@@ -1,6 +1,7 @@
 {
   "disallowEmptyBlocks": false,
   "disallowTrailingComma": true,
+  "maximumLineLength": 120,
   "preset": "airbnb",
   "requirePaddingNewLinesAfterBlocks": false,
   "requirePaddingNewLinesBeforeLineComments": false,
