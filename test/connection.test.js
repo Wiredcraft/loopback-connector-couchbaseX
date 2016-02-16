@@ -125,7 +125,7 @@ describe('Couchbase connector', function () {
     }, function (err, res) {
       var pingConnector = res.connector;
       pingConnector.connect();
-      pingConnector.clusterManager('Administrator', 'password')
+      pingConnector.clusterManager(process.env.COUCHBASE_USER, process.env.COUCHBASE_PASS)
         .then(function (clusterManager) {
           clusterManager.removeBucket('test_ping', function (err, res) {
             pingConnector.ping(function (err, res) {
