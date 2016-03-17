@@ -1,4 +1,8 @@
-var should = require('./init.js');
+'use strict';
+
+var should = require('should');
+
+var init = require('./init');
 
 describe('Couchbase connector', function () {
 
@@ -12,11 +16,12 @@ describe('Couchbase connector', function () {
   });
 
   it('can connect.', function (done) {
-    db = getDataSource(null, function (err, res) {
+    init.getDataSource(null, function (err, res) {
       if (err) return done(err);
-      res.should.be.type('object');
+      res.should.be.Object();
       res.should.have.property('connected', true);
-      res.should.have.property('connector').with.type('object');
+      res.should.have.property('connector').which.is.Object();
+      db = res;
       connector = res.connector;
       done();
     });
@@ -25,10 +30,10 @@ describe('Couchbase connector', function () {
   it('can connect.', function (done) {
     connector.connect(function (err, res) {
       if (err) return done(err);
-      res.should.be.type('object');
+      res.should.be.Object();
       res.should.have.property('connected', true);
-      res.should.have.property('disconnect').with.type('function');
-      res.should.have.property('disconnectAsync').with.type('function');
+      res.should.have.property('disconnect').which.is.Function();
+      res.should.have.property('disconnectAsync').which.is.Function();
       done();
     });
   });
@@ -60,60 +65,68 @@ describe('Couchbase connector', function () {
     connector.disconnect(done);
   });
 
-  it('can do pingpong with promise style when connected', function (done) {
-    db = getDataSource(null, function (err, res) {
+  it('can connect.', function (done) {
+    connector.connect(done);
+  });
+
+});
+
+describe('Couchbase ping', function () {
+
+  var db;
+  var connector;
+
+  before(function (done) {
+    init.getDataSource(null, function (err, res) {
       if (err) return done(err);
-      connector = res.connector;
-      connector.connect();
-      connector.ping()
-        .then(function (res) {
-          res.should.be.ok;
-          done();
-        }).catch(done);
+      db = res;
+      connector = db.connector;
+      done();
     });
   });
 
+  beforeEach(function (done) {
+    connector.connect(done);
+  });
+
+  it('can do pingpong with promise style when connected', function (done) {
+    connector.ping().then(function (res) {
+      res.should.be.ok;
+      done();
+    }).catch(done);
+  });
+
   it('can do pingpong with callback style when connected', function (done) {
-    db = getDataSource(null, function (err, res) {
+    connector.ping(function (err, res) {
       if (err) return done(err);
-      connector = res.connector;
-      connector.connect();
-      connector.ping(function (err, res) {
-        if (err) done(err);
-        res.should.be.ok;
+      res.should.be.ok;
+      done();
+    });
+  });
+
+  it('can not response ping with promise style when disconnected', function (done) {
+    connector.disconnect(function (err, res) {
+      connector.ping().then(function () {
+        throw new Error('expected an error');
+      }).catch(function (err) {
+        should.exist(err);
         done();
       });
     });
   });
 
-  it('can not response ping with promise style when disconnected', function (done) {
-    db = getDataSource(null, function (err, res) {
-      connector = res.connector;
-      connector.disconnect(function (err, res) {
-        connector.ping()
-          .catch(function (err) {
-            should.exist(err);
-            done();
-          });
-      });
-    });
-  });
-
   it('can not response ping with callback style when disconnected', function (done) {
-    getDataSource(null, function (err, res) {
-      connector = res.connector;
-      connector.disconnect(function (err, res) {
-        connector.ping(function (err, res) {
-          should.exist(err);
-          done();
-        });
+    connector.disconnect(function (err, res) {
+      connector.ping(function (err, res) {
+        should.exist(err);
+        done();
       });
     });
   });
 
   it('can not response ping with when bucket connected but crashed', function (done) {
     this.timeout(50000);
-    getDataSource({
+    init.getDataSource({
       cluster: {
         url: 'couchbase://localhost',
         options: {}
@@ -136,4 +149,5 @@ describe('Couchbase connector', function () {
         });
     });
   });
+
 });

@@ -1,5 +1,9 @@
-var should = require('./init.js');
+'use strict';
+
+var should = require('should');
 var uuid = require('node-uuid');
+
+var init = require('./init');
 
 describe('Couchbase CRUD', function () {
 
@@ -9,32 +13,42 @@ describe('Couchbase CRUD', function () {
   var persons;
 
   before(function (done) {
-    db = getDataSource(null, done);
-    connector = db.connector;
-    Person = db.createModel('person', {
-      id: {
-        type: String,
-        id: true
-      },
-      name: String,
-      age: Number
+    init.getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      db = res;
+      connector = db.connector;
+      Person = db.createModel('person', {
+        id: {
+          type: String,
+          id: true
+        },
+        name: String,
+        age: Number
+      });
+      persons = [{
+        id: '0',
+        name: 'Charlie',
+        age: 24
+      }, {
+        id: '1',
+        name: 'Mary',
+        age: 24
+      }, {
+        id: '2',
+        name: 'David',
+        age: 24
+      }, {
+        name: 'Jason',
+        age: 44
+      }];
+      done();
     });
-    persons = [{
-      id: '0',
-      name: 'Charlie',
-      age: 24
-    }, {
-      id: '1',
-      name: 'Mary',
-      age: 24
-    }, {
-      id: '2',
-      name: 'David',
-      age: 24
-    }, {
-      name: 'Jason',
-      age: 44
-    }];
+  });
+
+  after(function (done) {
+    connector.manager().call('flushAsync').then(function () {
+      done();
+    }, done);
   });
 
   describe('Create', function () {

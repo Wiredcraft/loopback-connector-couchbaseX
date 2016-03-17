@@ -1,8 +1,9 @@
 'use strict';
 
-// This test written in mocha
-var should = require('./init.js');
-var newId = require('node-uuid').v4();
+var should = require('should');
+var uuid = require('node-uuid');
+
+var init = require('./init');
 
 describe('Couchbase query methods', function () {
 
@@ -12,19 +13,23 @@ describe('Couchbase query methods', function () {
   var person;
 
   before(function (done) {
-    db = getDataSource(null, done);
-    connector = db.connector;
-    Person = db.createModel('person', {
-      id: {
-        type: String,
-        id: true
-      },
-      name: String
+    init.getDataSource(null, function (err, res) {
+      if (err) return done(err);
+      db = res;
+      connector = db.connector;
+      Person = db.createModel('person', {
+        id: {
+          type: String,
+          id: true
+        },
+        name: String
+      });
+      person = {
+        id: uuid.v4(),
+        name: '_SpecialName'
+      };
+      done();
     });
-    person = {
-      id: newId,
-      name: '_SpecialName'
-    };
   });
 
   before(function (done) {
@@ -47,7 +52,6 @@ describe('Couchbase query methods', function () {
     }, done);
   });
 
-  //QUERY TEST
   it('query should get result by view function', function (done) {
     connector.view('dev_default', 'personName', {
       key: '_SpecialName'
