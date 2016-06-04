@@ -39,7 +39,7 @@
     "benchmark": "^2.1.0",
     "coveralls": "^2.11.8",
     "istanbul": "^0.4.2",
-    "jscs": "^2.11.0",
+    "jscs": "^3.0.4",
     "loopback-datasource-juggler": "^2.45.2",
     "mocha": "^2.4.5",
     "rc": "^1.0.0",
