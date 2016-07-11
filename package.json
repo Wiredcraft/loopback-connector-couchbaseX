@@ -29,7 +29,7 @@
   "homepage": "https://github.com/Wiredcraft/loopback-connector-couchbase3",
   "dependencies": {
     "bluebird": "^3.3.4",
-    "couchbase": "^2.1.4",
+    "couchbase": "^2.2.1",
     "debug": "^2.2.0",
     "es6-shim": "^0.35.0",
     "loopback-connector": "^2.3.0",
