@@ -129,12 +129,10 @@ describe('Couchbase CRUD', function () {
     });
 
     it('cannot find an unsaved instance', function (done) {
-      Person.findById('1').then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
-        should.exist(err);
+      Person.findById('1').then(function (res) {
+        should.not.exist(res);
         done();
-      });
+      }, done);
     });
 
     // TODO: more errors
@@ -163,12 +161,12 @@ describe('Couchbase CRUD', function () {
 
     it('cannot destroy an unsaved instance', function (done) {
       var person = Person(persons[2]);
-      person.remove().then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
-        should.exist(err);
+      person.remove().then(function (res) {
+        res.should.deepEqual({
+          count: 0
+        });
         done();
-      });
+      }, done);
     });
 
     // TODO: more errors
@@ -195,9 +193,16 @@ describe('Couchbase CRUD', function () {
     });
 
     it('cannot destroy an unsaved instance', function (done) {
-      Person.destroyById('2').then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
+      Person.destroyById('2').then(function (res) {
+        res.should.deepEqual({
+          count: 0
+        });
+        done();
+      }, done).catch(done);
+    });
+
+    it('cannot destroy without giving id', function (done) {
+      Person.destroyById('').then().catch(function (err) {
         should.exist(err);
         done();
       });
@@ -286,7 +291,7 @@ describe('Couchbase CRUD', function () {
     // TODO: more errors
   });
 
-  describe.skip('Find multiple', function () {
+  describe('Find multiple', function () {
     before(function (done) {
       Person.create(persons[0]).then(function () {
         done();
@@ -305,20 +310,30 @@ describe('Couchbase CRUD', function () {
       }, done);
     });
 
-    it('can find 2 instances', function (done) {
+    it('can find 2 instances by id', function (done) {
       Person.findByIds(['0', '1']).then(function (res) {
         res.should.be.Array().with.length(2);
+        res[0].should.have.property('id', '0');
+        res[0].should.have.property('name', 'Charlie');
+        res[1].should.have.property('id', '1');
+        res[1].should.have.property('name', 'Mary');
         done();
       }).catch(done);
     });
 
-    it('cannot find wrong instances', function (done) {
-      Person.findByIds(['0', 'lorem']).then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
-        should.exist(err);
+    it('cannot find wrong instances by id', function (done) {
+      Person.findByIds(['0', 'lorem']).then(function (res) {
+        res.should.be.Array().with.length(1);
+        res[0].should.have.property('name', 'Charlie');
         done();
-      });
+      }).catch(done);
+    });
+
+    it('cannot find when giving a empty array of ids', function (done) {
+      Person.findByIds([]).then(function (res) {
+        res.should.be.Array().with.length(0);
+        done();
+      }).catch(done);
     });
 
     it('can find 2 instances', function (done) {
@@ -330,6 +345,10 @@ describe('Couchbase CRUD', function () {
         }
       }).then(function (res) {
         res.should.be.Array().with.length(2);
+        res[0].should.have.property('id', '0');
+        res[0].should.have.property('name', 'Charlie');
+        res[1].should.have.property('id', '1');
+        res[1].should.have.property('name', 'Mary');
         done();
       }).catch(done);
     });
@@ -341,16 +360,68 @@ describe('Couchbase CRUD', function () {
             inq: ['0', 'lorem']
           }
         }
-      }).then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
+      }).then(function (res) {
+        res.should.be.Array().with.length(1);
+        res[0].should.have.property('name', 'Charlie');
+        done();
+      }).catch(done);
+    });
+
+    it('can find empty when giving empty id array in inq', function (done) {
+      Person.find({
+        where: {
+          id: {
+            inq: []
+          }
+        }
+      }).then(function (res) {
+        res.should.be.Array().with.length(0);
+        done();
+      }).catch(done);
+    });
+
+    it('can find empty when giving empty id object', function (done) {
+      Person.find({
+        where: {
+          id: {}
+        }
+      }).then(function (res) {
+        res.should.be.Array().with.length(0);
+        done();
+      }).catch(done);
+    });
+
+    it('cannot find when giving empty where object', function (done) {
+      Person.find({
+        where: {}
+      }).then(function (res) {
+        res.should.be.Array().with.length(0);
+        done();
+      }).catch(done);
+    });
+
+    it('cannot find when giving empty query object', function (done) {
+      Person.find({}).then(function (res) {
+        done(new Error);
+      }).catch(function (err) {
         should.exist(err);
         done();
       });
     });
+
+    it('cannot find when giving empty', function (done) {
+      Person.find().then(function (res) {
+        done(new Error);
+      }).catch(function (err) {
+        should.exist(err);
+        done();
+      });
+    });
+
+    // TODO: more errors
   });
 
-  describe.skip('Destroy multiple', function () {
+  describe('Destroy multiple', function () {
     before(function (done) {
       Person.create(persons[0]).then(function () {
         done();
@@ -387,12 +458,27 @@ describe('Couchbase CRUD', function () {
         id: {
           inq: ['0', '1']
         }
-      }).then(function () {
-        done(new Error('expected an error'));
-      }, function (err) {
-        should.exist(err);
+      }).then(function (res) {
+        res.should.deepEqual({
+          count: 0
+        });
         done();
-      });
+      }).catch(done);
+    });
+
+    it('can remove existed instance while cannot remove non-existed one', function (done) {
+      Person.create(persons[0]).then(function () {
+        Person.remove({
+          id: {
+            inq: ['0', '1']
+          }
+        }).then(function (res) {
+          res.should.deepEqual({
+            count: 1
+          });
+          done();
+        }).catch(done);
+      }, done);
     });
   });
 
