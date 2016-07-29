@@ -1,10 +1,6 @@
 {
-  "disallowEmptyBlocks": false,
-  "disallowTrailingComma": true,
-  "maximumLineLength": 120,
-  "preset": "airbnb",
-  "requirePaddingNewLinesAfterBlocks": false,
-  "requirePaddingNewLinesBeforeLineComments": false,
-  "requireTrailingComma": false,
-  "safeContextKeyword": ["self"]
+  "disallowSpacesInsideObjectBrackets": null,
+  "disallowUnusedVariables": true,
+  "preset": "grunt",
+  "requireSpacesInsideObjectBrackets": "all"
 }
