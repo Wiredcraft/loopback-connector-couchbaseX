@@ -41,7 +41,7 @@
     "istanbul": "^0.4.2",
     "jscs": "^2.11.0",
     "loopback-datasource-juggler": "^2.45.2",
-    "mocha": "^2.4.5",
+    "mocha": "^3.0.2",
     "rc": "^1.0.0",
     "should": "^8.2.2"
   },
