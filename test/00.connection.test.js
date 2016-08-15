@@ -77,7 +77,7 @@ describe('Couchbase connector', function() {
 
 });
 
-describe.skip('Couchbase ping', function() {
+describe('Couchbase ping', function() {
 
   var db;
   var connector;
@@ -149,14 +149,12 @@ describe.skip('Couchbase ping', function() {
       var pingConnector = res.connector;
       pingConnector.connect();
       pingConnector.clusterManager(process.env.COUCHBASE_USER, process.env.COUCHBASE_PASS)
-        .then(function(clusterManager) {
-          clusterManager.removeBucket('test_ping', function(err, res) {
-            pingConnector.ping(function(err, res) {
-              should.exist(err);
-              done();
-            });
+        .call('removeBucketAsync', 'test_ping').then(function() {
+          pingConnector.ping(function(err, res) {
+            should.exist(err);
+            done();
           });
-        });
+        }).catch(done);
     });
   });
 

@@ -1,5 +1,6 @@
 'use strict';
 
+require('should');
 var uuid = require('node-uuid');
 
 var init = require('./init');
@@ -37,9 +38,7 @@ describe('Couchbase query methods', function() {
     connector.upsertDesignDocument('dev_default', {
       views: {
         personName: {
-          map: function(doc, meta) {
-            emit(doc.name, doc);
-          }
+          map: 'function(doc, meta) { emit(doc.name, doc); }'
         }
       }
     }).then(function() {

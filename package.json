@@ -29,9 +29,10 @@
   "homepage": "https://github.com/Wiredcraft/loopback-connector-couchbase3",
   "dependencies": {
     "bluebird": "^3.4.1",
-    "couchbase": "^2.2.1",
+    "couchbase": "^2.2.2",
     "debug": "^2.2.0",
     "loopback-connector": "^2.4.0",
+    "loopback-connector-nosql": "^0.1.0",
     "node-uuid": "^1.4.0"
   },
   "devDependencies": {
@@ -39,10 +40,10 @@
     "coveralls": "^2.11.12",
     "istanbul": "^0.4.4",
     "jscs": "^3.0.7",
-    "loopback-datasource-juggler": "^2.47.0",
-    "mocha": "^2.5.3",
+    "loopback-datasource-juggler": "^2.48.0",
+    "mocha": "^3.0.2",
     "rc": "^1.0.0",
-    "should": "^10.0.0"
+    "should": "^11.1.0"
   },
   "scripts": {
     "benchmarks": "make benchmarks",

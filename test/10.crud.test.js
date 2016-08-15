@@ -6,7 +6,7 @@ var init = require('./init');
 
 describe('Couchbase CRUD', function() {
 
-  var db;
+  var ds;
   var connector;
   var Person;
   var persons;
@@ -16,9 +16,9 @@ describe('Couchbase CRUD', function() {
       if (err) {
         return done(err);
       }
-      db = res;
-      connector = db.connector;
-      Person = db.createModel('person', {
+      ds = res;
+      connector = ds.connector;
+      Person = ds.createModel('person', {
         id: {
           type: String,
           id: true
@@ -290,6 +290,10 @@ describe('Couchbase CRUD', function() {
 
   describe('Find multiple', function() {
     before(function(done) {
+      ds.autoupdate(done);
+    });
+
+    before(function(done) {
       Person.create(persons[0]).then(function() {
         done();
       }, done);
@@ -388,31 +392,27 @@ describe('Couchbase CRUD', function() {
       }).catch(done);
     });
 
-    it.skip('cannot find when giving empty where object', function(done) {
+    it('can find when giving empty where object', function(done) {
       Person.find({
         where: {}
       }).then(function(res) {
-        res.should.be.Array().with.length(0);
+        res.should.be.Array().with.length(2);
         done();
       }).catch(done);
     });
 
-    it('cannot find when giving empty query object', function(done) {
+    it('can find when giving empty query object', function(done) {
       Person.find({}).then(function(res) {
-        done(new Error);
-      }).catch(function(err) {
-        should.exist(err);
+        res.should.be.Array().with.length(2);
         done();
-      });
+      }).catch(done);
     });
 
-    it('cannot find when giving empty', function(done) {
+    it('can find when giving empty', function(done) {
       Person.find().then(function(res) {
-        done(new Error);
-      }).catch(function(err) {
-        should.exist(err);
+        res.should.be.Array().with.length(2);
         done();
-      });
+      }).catch(done);
     });
 
     // TODO: more errors
