@@ -2,7 +2,7 @@
 set -ev
 
 # Require some environment variables. Examples:
-# export COUCHBASE="couchbase/server:community-3.0.1"
+# export COUCHBASE="couchbase/server:community-3.1.3"
 # export COUCHBASE_USER="Administrator"
 # export COUCHBASE_PASS="password"
 
@@ -19,7 +19,7 @@ function catch()
     return $ex_code
 }
 
-docker pull $COUCHBASE
+# docker pull $COUCHBASE
 
 docker run --name CONTAINER -d -p 8091:8091 -p 8092:8092 -p 11207:11207 -p 11210:11210 $COUCHBASE
 

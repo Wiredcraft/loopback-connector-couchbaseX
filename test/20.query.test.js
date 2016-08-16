@@ -1,20 +1,22 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var uuid = require('node-uuid');
 
 var init = require('./init');
 
-describe('Couchbase query methods', function () {
+describe('Couchbase query methods', function() {
 
   var db;
   var connector;
   var Person;
   var person;
 
-  before(function (done) {
-    init.getDataSource(null, function (err, res) {
-      if (err) return done(err);
+  before(function(done) {
+    init.getDataSource(null, function(err, res) {
+      if (err) {
+        return done(err);
+      }
       db = res;
       connector = db.connector;
       Person = db.createModel('person', {
@@ -32,30 +34,28 @@ describe('Couchbase query methods', function () {
     });
   });
 
-  before(function (done) {
+  before(function(done) {
     connector.upsertDesignDocument('dev_default', {
       views: {
         personName: {
-          map: function (doc, meta) {
-            emit(doc.name, doc);
-          }
+          map: 'function(doc, meta) { emit(doc.name, doc); }'
         }
       }
-    }).then(function () {
+    }).then(function() {
       Person.create(person, done);
     }, done);
   });
 
-  after(function (done) {
-    connector.manager().call('flushAsync').then(function () {
+  after(function(done) {
+    connector.manager().call('flushAsync').then(function() {
       done();
     }, done);
   });
 
-  it('query should get result by view function', function (done) {
+  it('query should get result by view function', function(done) {
     connector.view('dev_default', 'personName', {
       key: '_SpecialName'
-    }).then(function (res) {
+    }).then(function(res) {
       res.length.should.equal(1);
       done();
     }, done);
