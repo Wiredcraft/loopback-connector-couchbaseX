@@ -1,4 +1,17 @@
 
+0.3.0 / 2016-08-16
+==================
+
+  * Reimplemented based on `loopback-connector-nosql` and now all the hooks should return things as `loopback-datasource-juggler` expects.
+  * Updated modules and coding styles.
+  * update find/multiFind, destroy/multiDestroy to return array/count instead of throwing a error when instance does not exist
+  * update couchbase to 2.2.1
+  * Improved styles for the tests.
+  * Improved some coding style.
+  * chore(package): update es6-shim to version 0.35.0
+  * Use env var for Couchbase user and pass.
+  * Updated JSCS and other packages.
+
 0.2.2 / 2016-02-01
 ==================
 
