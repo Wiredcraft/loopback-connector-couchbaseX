@@ -40,7 +40,7 @@
     "coveralls": "^2.11.12",
     "istanbul": "^0.4.4",
     "jscs": "^3.0.7",
-    "loopback-datasource-juggler": "^2.48.0",
+    "loopback-datasource-juggler": "^2.51.0",
     "mocha": "^3.0.2",
     "rc": "^1.0.0",
     "should": "^11.1.0"
