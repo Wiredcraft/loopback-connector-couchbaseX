@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.1",
-    "coveralls": "^2.11.12",
+    "coveralls": "^2.11.14",
     "istanbul": "^0.4.4",
     "jscs": "^3.0.7",
     "loopback-datasource-juggler": "^2.48.0",
