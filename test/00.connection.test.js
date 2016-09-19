@@ -1,18 +1,17 @@
 'use strict';
 
-var should = require('should');
+const should = require('should');
 
-var init = require('./init');
+const init = require('./init');
+const flush = require('./flush');
 
 describe('Couchbase connector', function() {
 
-  var db;
-  var connector;
+  let db;
+  let connector;
 
   after(function(done) {
-    connector.manager().call('flushAsync').then(function() {
-      done();
-    }, done);
+    flush('test_bucket', done);
   });
 
   it('can connect.', function(done) {
@@ -79,8 +78,8 @@ describe('Couchbase connector', function() {
 
 describe('Couchbase ping', function() {
 
-  var db;
-  var connector;
+  let db;
+  let connector;
 
   before(function(done) {
     init.getDataSource(null, function(err, res) {
@@ -135,10 +134,9 @@ describe('Couchbase ping', function() {
   });
 
   it('can not response ping with when bucket connected but crashed', function(done) {
-    this.timeout(50000);
     init.getDataSource({
       cluster: {
-        url: 'couchbase://localhost',
+        url: process.env.COUCHBASE_URL || 'couchbase://localhost',
         options: {}
       },
       bucket: {
@@ -146,7 +144,7 @@ describe('Couchbase ping', function() {
         password: ''
       }
     }, function(err, res) {
-      var pingConnector = res.connector;
+      const pingConnector = res.connector;
       pingConnector.connect();
       pingConnector.clusterManager(process.env.COUCHBASE_USER, process.env.COUCHBASE_PASS)
         .call('removeBucketAsync', 'test_ping').then(function() {

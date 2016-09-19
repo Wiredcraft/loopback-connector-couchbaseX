@@ -1,15 +1,15 @@
 'use strict';
 
-var should = require('should');
+const should = require('should');
 
-var init = require('./init');
+const init = require('./init');
+const flush = require('./flush');
 
 describe('Couchbase CRUD', function() {
 
-  var ds;
-  var connector;
-  var Person;
-  var persons;
+  let ds;
+  let Person;
+  let persons;
 
   before(function(done) {
     init.getDataSource(null, function(err, res) {
@@ -17,7 +17,6 @@ describe('Couchbase CRUD', function() {
         return done(err);
       }
       ds = res;
-      connector = ds.connector;
       Person = ds.createModel('person', {
         id: {
           type: String,
@@ -47,16 +46,12 @@ describe('Couchbase CRUD', function() {
   });
 
   after(function(done) {
-    connector.manager().call('flushAsync').then(function() {
-      done();
-    }, done);
+    flush('test_bucket', done);
   });
 
   describe('Create', function() {
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can create an instance with an id', function(done) {
@@ -88,7 +83,7 @@ describe('Couchbase CRUD', function() {
   });
 
   describe('Find by ID', function() {
-    var id3;
+    let id3;
 
     before(function(done) {
       Person.create(persons[0]).then(function() {
@@ -104,9 +99,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can find a saved instance', function(done) {
@@ -147,13 +140,11 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can destroy a saved instance', function(done) {
-      var person = Person(persons[0]);
+      const person = Person(persons[0]);
       person.remove().then(function(res) {
         res.should.be.Object().with.property('count', 1);
         done();
@@ -161,7 +152,7 @@ describe('Couchbase CRUD', function() {
     });
 
     it('cannot destroy an unsaved instance', function(done) {
-      var person = Person(persons[2]);
+      const person = Person(persons[2]);
       person.remove().then(function(res) {
         res.should.be.Object().with.property('count', 0);
         done();
@@ -179,9 +170,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can destroy a saved instance', function(done) {
@@ -216,9 +205,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can update an instance', function(done) {
@@ -256,9 +243,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can update an instance', function(done) {
@@ -275,7 +260,7 @@ describe('Couchbase CRUD', function() {
     });
 
     it('can create an instance', function(done) {
-      var person = Person(persons[1]);
+      const person = Person(persons[1]);
       person.save().then(function(res) {
         res.should.be.Object();
         res.should.have.property('id', '1');
@@ -306,9 +291,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can find 2 instances by id', function(done) {
@@ -432,9 +415,7 @@ describe('Couchbase CRUD', function() {
     });
 
     after(function(done) {
-      connector.manager().call('flushAsync').then(function() {
-        done();
-      }, done);
+      flush('test_bucket', done);
     });
 
     it('can remove 2 instances', function(done) {
