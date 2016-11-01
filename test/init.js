@@ -5,7 +5,7 @@ var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var config = {
   cluster: {
-    url: 'couchbase://localhost',
+    url: process.env.COUCHBASE_URL || 'couchbase://localhost',
     options: {}
   },
   bucket: {

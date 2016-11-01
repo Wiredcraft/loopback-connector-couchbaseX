@@ -1,0 +1,14 @@
+version: '2'
+services:
+  couchbase:
+    image: "couchbase:community-4.1.1"
+    container_name: couchbase
+    ports:
+      - "8091-8094:8091-8094"
+      - "11207:11207"
+      - "11210:11210"
+      - "18091-18093:18091-18093"
+    networks:
+      - couchbase
+networks:
+  couchbase:
