@@ -1,4 +1,11 @@
 
+0.3.1 / 2016-11-01
+==================
+
+  * Smaller view but slower find.
+  * Added a test helper that flushes data by removing all data which is faster than a real flush.
+  * Use `docker-compose` to manage the test boxes.
+
 0.3.0 / 2016-08-16
 ==================
 
