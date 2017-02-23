@@ -1,4 +1,10 @@
 
+0.4.0 / 2017-02-23
+==================
+
+  * Updated modules which fixed a problem with reconnect to DB.
+  * chore(package): update uuid to version 3.0.0
+
 0.3.1 / 2016-11-01
 ==================
 
