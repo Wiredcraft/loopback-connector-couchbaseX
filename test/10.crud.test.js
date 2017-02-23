@@ -5,14 +5,14 @@ const should = require('should');
 const init = require('./init');
 const flush = require('./flush');
 
-describe('Couchbase CRUD', function() {
+describe('Couchbase CRUD', () => {
 
   let ds;
   let Person;
   let persons;
 
-  before(function(done) {
-    init.getDataSource(null, function(err, res) {
+  before((done) => {
+    init.getDataSource(null, (err, res) => {
       if (err) {
         return done(err);
       }
@@ -45,412 +45,384 @@ describe('Couchbase CRUD', function() {
     });
   });
 
-  after(function(done) {
+  after((done) => {
     flush('test_bucket', done);
   });
 
-  describe('Create', function() {
-    after(function(done) {
+  describe('Create', () => {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can create an instance with an id', function(done) {
-      Person.create(persons[0]).then(function(person) {
+    it('can create an instance with an id', () => {
+      return Person.create(persons[0]).then((person) => {
         person.id.should.equal('0');
         person.name.should.equal('Charlie');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can create an instance without an id', function(done) {
-      Person.create(persons[3]).then(function(person) {
+    it('can create an instance without an id', () => {
+      return Person.create(persons[3]).then((person) => {
         person.id.should.be.String();
         person.name.should.equal('Jason');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot create with a duplicate id ', function(done) {
-      Person.create(persons[0]).then(function() {
-        done(new Error('expected an error'));
-      }, function(err) {
+    it('cannot create with a duplicate id ', () => {
+      return Person.create(persons[0]).then(() => {
+        throw new Error('expected an error');
+      }, (err) => {
         should.exist(err);
-        done();
       });
     });
 
     // TODO: more errors
   });
 
-  describe('Find by ID', function() {
+  describe('Find by ID', () => {
     let id3;
 
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+    before(() => {
+      return Person.create(persons[0]);
     });
 
-    before(function(done) {
-      Person.create(persons[3]).then(function(person) {
+    before(() => {
+      return Person.create(persons[3]).then((person) => {
         id3 = person.id;
-        done();
-      }, done);
+      });
     });
 
-    after(function(done) {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can find a saved instance', function(done) {
-      Person.findById('0').then(function(person) {
+    it('can find a saved instance', () => {
+      return Person.findById('0').then((person) => {
         person.should.be.Object();
         person.id.should.equal('0');
         person.name.should.equal('Charlie');
         person.age.should.equal(24);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find a saved instance', function(done) {
-      Person.findById(id3).then(function(person) {
+    it('can find a saved instance', () => {
+      return Person.findById(id3).then((person) => {
         person.should.be.Object();
         person.id.should.equal(id3);
         person.name.should.equal('Jason');
         person.age.should.equal(44);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot find an unsaved instance', function(done) {
-      Person.findById('1').then(function(res) {
+    it('cannot find an unsaved instance', () => {
+      return Person.findById('1').then((res) => {
         should.not.exist(res);
-        done();
-      }).catch(done);
+      });
     });
 
-    // TODO: more errors
-  });
-
-  describe('Destroy', function() {
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+    it('can disconnect', (done) => {
+      ds.disconnect(done);
     });
 
-    after(function(done) {
-      flush('test_bucket', done);
+    it('can connect', (done) => {
+      ds.connect(done);
     });
 
-    it('can destroy a saved instance', function(done) {
-      const person = Person(persons[0]);
-      person.remove().then(function(res) {
-        res.should.be.Object().with.property('count', 1);
-        done();
-      }).catch(done);
-    });
-
-    it('cannot destroy an unsaved instance', function(done) {
-      const person = Person(persons[2]);
-      person.remove().then(function(res) {
-        res.should.be.Object().with.property('count', 0);
-        done();
-      }).catch(done);
-    });
-
-    // TODO: more errors
-  });
-
-  describe('Destroy by ID', function() {
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
-    });
-
-    after(function(done) {
-      flush('test_bucket', done);
-    });
-
-    it('can destroy a saved instance', function(done) {
-      Person.destroyById('0').then(function(res) {
-        res.should.be.Object().with.property('count', 1);
-        done();
-      }).catch(done);
-    });
-
-    it('cannot destroy an unsaved instance', function(done) {
-      Person.destroyById('2').then(function(res) {
-        res.should.be.Object().with.property('count', 0);
-        done();
-      }).catch(done);
-    });
-
-    it('cannot destroy without giving id', function(done) {
-      Person.destroyById('').then().catch(function(err) {
-        should.exist(err);
-        done();
+    it('can find a saved instance', () => {
+      return Person.findById('0').then((person) => {
+        person.should.be.Object();
+        person.id.should.equal('0');
+        person.name.should.equal('Charlie');
+        person.age.should.equal(24);
       });
     });
 
     // TODO: more errors
   });
 
-  describe('Update or Create', function() {
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+  describe('Destroy', () => {
+    before(() => {
+      return Person.create(persons[0]);
     });
 
-    after(function(done) {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can update an instance', function(done) {
-      Person.updateOrCreate({
+    it('can destroy a saved instance', () => {
+      const person = Person(persons[0]);
+      return person.remove().then((res) => {
+        res.should.be.Object().with.property('count', 1);
+      });
+    });
+
+    it('cannot destroy an unsaved instance', () => {
+      const person = Person(persons[2]);
+      return person.remove().then((res) => {
+        res.should.be.Object().with.property('count', 0);
+      });
+    });
+
+    // TODO: more errors
+  });
+
+  describe('Destroy by ID', () => {
+    before(() => {
+      return Person.create(persons[0]);
+    });
+
+    after((done) => {
+      flush('test_bucket', done);
+    });
+
+    it('can destroy a saved instance', () => {
+      return Person.destroyById('0').then((res) => {
+        res.should.be.Object().with.property('count', 1);
+      });
+    });
+
+    it('cannot destroy an unsaved instance', () => {
+      return Person.destroyById('2').then((res) => {
+        res.should.be.Object().with.property('count', 0);
+      });
+    });
+
+    it('cannot destroy without giving id', () => {
+      return Person.destroyById('').then(() => {
+        throw new Error('expected an error');
+      }, (err) => {
+        should.exist(err);
+      });
+    });
+
+    // TODO: more errors
+  });
+
+  describe('Update or Create', () => {
+    before(() => {
+      return Person.create(persons[0]);
+    });
+
+    after((done) => {
+      flush('test_bucket', done);
+    });
+
+    it('can update an instance', () => {
+      return Person.updateOrCreate({
         id: '0',
         name: 'Charlie II',
         age: 24
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Object();
         res.should.have.property('id', '0');
         res.should.have.property('name', 'Charlie II');
         res.should.have.property('age', 24);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can create an instance', function(done) {
-      Person.updateOrCreate(persons[1]).then(function(res) {
+    it('can create an instance', () => {
+      return Person.updateOrCreate(persons[1]).then((res) => {
         res.should.be.Object();
         res.should.have.property('id', '1');
         res.should.have.property('name', 'Mary');
         res.should.have.property('age', 24);
-        done();
-      }).catch(done);
+      });
     });
 
     // TODO: more errors
   });
 
-  describe('Save', function() {
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+  describe('Save', () => {
+    before(() => {
+      return Person.create(persons[0]);
     });
 
-    after(function(done) {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can update an instance', function(done) {
-      Person.findById('0').then(function(person) {
+    it('can update an instance', () => {
+      return Person.findById('0').then((person) => {
         person.name = 'Charlie II';
-        person.save().then(function(res) {
+        return person.save().then((res) => {
           res.should.be.Object();
           res.should.have.property('id', '0');
           res.should.have.property('name', 'Charlie II');
           res.should.have.property('age', 24);
-          done();
         });
-      }).catch(done);
+      });
     });
 
-    it('can create an instance', function(done) {
+    it('can create an instance', () => {
       const person = Person(persons[1]);
-      person.save().then(function(res) {
+      return person.save().then((res) => {
         res.should.be.Object();
         res.should.have.property('id', '1');
         res.should.have.property('name', 'Mary');
         res.should.have.property('age', 24);
-        done();
-      }).catch(done);
+      });
     });
 
     // TODO: more errors
   });
 
-  describe('Find multiple', function() {
-    before(function(done) {
+  describe('Find multiple', () => {
+    before((done) => {
       ds.autoupdate(done);
     });
 
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+    before(() => {
+      return Person.create(persons[0]);
     });
 
-    before(function(done) {
-      Person.create(persons[1]).then(function() {
-        done();
-      }, done);
+    before(() => {
+      return Person.create(persons[1]);
     });
 
-    after(function(done) {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can find 2 instances by id', function(done) {
-      Person.findByIds(['0', '1']).then(function(res) {
+    it('can find 2 instances by id', () => {
+      return Person.findByIds(['0', '1']).then((res) => {
         res.should.be.Array().with.length(2);
         res[0].should.have.property('id', '0');
         res[0].should.have.property('name', 'Charlie');
         res[1].should.have.property('id', '1');
         res[1].should.have.property('name', 'Mary');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot find wrong instances by id', function(done) {
-      Person.findByIds(['0', 'lorem']).then(function(res) {
+    it('cannot find wrong instances by id', () => {
+      return Person.findByIds(['0', 'lorem']).then((res) => {
         res.should.be.Array().with.length(1);
         res[0].should.have.property('name', 'Charlie');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot find when giving a empty array of ids', function(done) {
-      Person.findByIds([]).then(function(res) {
+    it('cannot find when giving a empty array of ids', () => {
+      return Person.findByIds([]).then((res) => {
         res.should.be.Array().with.length(0);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find 2 instances', function(done) {
-      Person.find({
+    it('can find 2 instances', () => {
+      return Person.find({
         where: {
           id: {
             inq: ['0', '1']
           }
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Array().with.length(2);
         res[0].should.have.property('id', '0');
         res[0].should.have.property('name', 'Charlie');
         res[1].should.have.property('id', '1');
         res[1].should.have.property('name', 'Mary');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot find wrong instances', function(done) {
-      Person.find({
+    it('cannot find wrong instances', () => {
+      return Person.find({
         where: {
           id: {
             inq: ['0', 'lorem']
           }
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Array().with.length(1);
         res[0].should.have.property('name', 'Charlie');
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find empty when giving empty id array in inq', function(done) {
-      Person.find({
+    it('can find empty when giving empty id array in inq', () => {
+      return Person.find({
         where: {
           id: {
             inq: []
           }
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Array().with.length(0);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find empty when giving empty id object', function(done) {
-      Person.find({
+    it('can find empty when giving empty id object', () => {
+      return Person.find({
         where: {
           id: {}
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Array().with.length(0);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find when giving empty where object', function(done) {
-      Person.find({
+    it('can find when giving empty where object', () => {
+      return Person.find({
         where: {}
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Array().with.length(2);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find when giving empty query object', function(done) {
-      Person.find({}).then(function(res) {
+    it('can find when giving empty query object', () => {
+      return Person.find({}).then((res) => {
         res.should.be.Array().with.length(2);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can find when giving empty', function(done) {
-      Person.find().then(function(res) {
+    it('can find when giving empty', () => {
+      return Person.find().then((res) => {
         res.should.be.Array().with.length(2);
-        done();
-      }).catch(done);
+      });
     });
 
     // TODO: more errors
   });
 
-  describe('Destroy multiple', function() {
-    before(function(done) {
-      Person.create(persons[0]).then(function() {
-        done();
-      }, done);
+  describe('Destroy multiple', () => {
+    before(() => {
+      return Person.create(persons[0]);
     });
 
-    before(function(done) {
-      Person.create(persons[1]).then(function() {
-        done();
-      }, done);
+    before(() => {
+      return Person.create(persons[1]);
     });
 
-    after(function(done) {
+    after((done) => {
       flush('test_bucket', done);
     });
 
-    it('can remove 2 instances', function(done) {
-      Person.remove({
+    it('can remove 2 instances', () => {
+      return Person.remove({
         id: {
           inq: ['0', '1']
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Object().with.property('count', 2);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('cannot remove them again', function(done) {
-      Person.remove({
+    it('cannot remove them again', () => {
+      return Person.remove({
         id: {
           inq: ['0', '1']
         }
-      }).then(function(res) {
+      }).then((res) => {
         res.should.be.Object().with.property('count', 0);
-        done();
-      }).catch(done);
+      });
     });
 
-    it('can remove existed instance while cannot remove non-existed one', function(done) {
-      Person.create(persons[0]).then(function() {
+    it('can remove existed instance while cannot remove non-existed one', () => {
+      return Person.create(persons[0]).then(() => {
         return Person.remove({
           id: {
             inq: ['0', '1']
           }
-        }).then(function(res) {
+        }).then((res) => {
           res.should.be.Object().with.property('count', 1);
-          done();
         });
-      }).catch(done);
+      });
     });
   });
 

@@ -32,6 +32,15 @@ npm install loopback-connector-couchbase3 --save
 }
 ```
 
+## Dev
+
+```
+export COUCHBASE="couchbase3"
+export COUCHBASE_USER="Administrator"
+export COUCHBASE_PASS="password"
+./dockers/start-couchbase.sh
+```
+
 ## Test
 
 precheck: couchbase server is runing with two buckets named `test_bucket`, `test_ping` and enabled its flush feature.
