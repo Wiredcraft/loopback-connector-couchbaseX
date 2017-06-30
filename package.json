@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-couchbase3",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "LoopBack Couchbase 3.x Connector",
   "author": {
     "name": "Wiredcraft",
