@@ -10,7 +10,8 @@ var config = {
   },
   bucket: {
     name: 'test_bucket',
-    password: ''
+    password: '',
+    operationTimeout: 60 * 1000
   }
 };
 
