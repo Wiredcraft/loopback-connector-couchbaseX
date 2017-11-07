@@ -1,16 +1,15 @@
 sudo: required
 language: node_js
 cache:
-  directories:
-    - node_modules
+  yarn: true
 notifications:
   email: false
 branches:
   only:
     - master
 node_js:
+  - "8"
   - "6"
-  - "4"
 services:
   - docker
 env:
@@ -20,11 +19,7 @@ env:
   matrix:
     - COUCHBASE="couchbase4"
     - COUCHBASE="couchbase3"
-before_install:
-  - ./dockers/start-couchbase.sh
-install:
-  - npm install
 before_script:
-  - npm prune
+  - ./dockers/start-couchbase.sh
 script:
   - make test-coveralls
