@@ -20,6 +20,6 @@ env:
     - COUCHBASE="couchbase4"
     - COUCHBASE="couchbase3"
 before_script:
-  - ./dockers/start-couchbase.sh
+  - ./dockers/up.sh
 script:
   - make test-coveralls

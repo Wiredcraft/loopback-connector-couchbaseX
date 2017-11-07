@@ -35,7 +35,7 @@ npm install loopback-connector-couchbase3 --save
 ## Dev
 
 ```
-export COUCHBASE="couchbase3"
+export COUCHBASE="couchbase4"
 export COUCHBASE_USER="Administrator"
 export COUCHBASE_PASS="password"
 ./dockers/start-couchbase.sh
