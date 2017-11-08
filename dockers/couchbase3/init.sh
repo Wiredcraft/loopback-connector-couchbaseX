@@ -2,7 +2,7 @@
 set -ev
 
 docker-compose run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli couchbase \
-  cluster-init -c couchbase:8091 -u $COUCHBASE_USER -p $COUCHBASE_PASS \
+  cluster-init -c couchbase:8091 -u Administrator -p password \
   --cluster-username=$COUCHBASE_USER --cluster-password=$COUCHBASE_PASS --cluster-ramsize=256
 
 docker-compose run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli couchbase \

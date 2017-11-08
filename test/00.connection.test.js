@@ -7,11 +7,15 @@ const flush = require('./flush');
 
 describe('Couchbase connector', () => {
 
-  let db;
+  let ds;
   let connector;
 
   after((done) => {
     flush('test_bucket', done);
+  });
+
+  after((done) => {
+    ds.disconnect(done);
   });
 
   it('can connect.', (done) => {
@@ -22,7 +26,7 @@ describe('Couchbase connector', () => {
       res.should.be.Object();
       res.should.have.property('connected', true);
       res.should.have.property('connector').which.is.Object();
-      db = res;
+      ds = res;
       connector = res.connector;
       done();
     });
@@ -42,7 +46,7 @@ describe('Couchbase connector', () => {
   });
 
   it('can disconnect.', (done) => {
-    db.disconnect(done);
+    ds.disconnect(done);
   });
 
   it('can disconnect.', (done) => {
@@ -78,7 +82,7 @@ describe('Couchbase connector', () => {
 
 describe('Couchbase ping', () => {
 
-  let db;
+  let ds;
   let connector;
 
   before((done) => {
@@ -86,14 +90,18 @@ describe('Couchbase ping', () => {
       if (err) {
         return done(err);
       }
-      db = res;
-      connector = db.connector;
+      ds = res;
+      connector = ds.connector;
       done();
     });
   });
 
   beforeEach((done) => {
     connector.connect(done);
+  });
+
+  after((done) => {
+    ds.disconnect(done);
   });
 
   it('can do pingpong with promise style when connected', (done) => {
@@ -134,6 +142,10 @@ describe('Couchbase ping', () => {
   });
 
   it('can not response ping with when bucket connected but crashed', (done) => {
+    let _ds;
+    const disconnect = () => {
+      _ds.disconnect(done);
+    };
     init.getDataSource({
       cluster: {
         url: process.env.COUCHBASE_URL || 'couchbase://localhost',
@@ -144,15 +156,19 @@ describe('Couchbase ping', () => {
         password: ''
       }
     }, (err, res) => {
+      if (err) {
+        return done(err);
+      }
+      _ds = res;
       const pingConnector = res.connector;
       pingConnector.connect();
       pingConnector.clusterManager(process.env.COUCHBASE_USER, process.env.COUCHBASE_PASS)
         .call('removeBucketAsync', 'test_ping').then(() => {
           pingConnector.ping((err, res) => {
             should.exist(err);
-            done();
+            disconnect();
           });
-        }).catch(done);
+        }).catch(disconnect);
     });
   });
 

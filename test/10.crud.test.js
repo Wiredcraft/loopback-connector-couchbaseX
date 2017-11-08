@@ -49,6 +49,10 @@ describe('Couchbase CRUD', () => {
     flush('test_bucket', done);
   });
 
+  after((done) => {
+    ds.disconnect(done);
+  });
+
   describe('Create', () => {
     after((done) => {
       flush('test_bucket', done);
