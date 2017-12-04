@@ -27,3 +27,7 @@ test-coveralls: test-cov send-coveralls
 b benchmark benchmarks:
 	@node benchmarks >> $(CURDIR)/benchmarks/results.md \
 		&& echo 'Done. See ./benchmarks/results.md'
+
+docs:
+	./node_modules/.bin/esdoc
+.PHONY: docs
