@@ -30,4 +30,6 @@ b benchmark benchmarks:
 
 docs:
 	./node_modules/.bin/esdoc
-.PHONY: docs
+docs-open: docs
+	open ./docs/index.html
+.PHONY: docs docs-open

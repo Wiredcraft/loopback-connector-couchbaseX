@@ -5,7 +5,7 @@
   "destination": "./docs",
   "lint": true,
   "unexportIdentifier": true,
-  "undocumentIdentifier": true,
+  "undocumentIdentifier": false,
   "experimentalProposal": {
     "classProperties": true,
     "objectRestSpread": true,
