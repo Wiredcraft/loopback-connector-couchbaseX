@@ -9,7 +9,6 @@ branches:
     - master
 node_js:
   - "8"
-  - "6"
 services:
   - docker
 env:
@@ -18,7 +17,6 @@ env:
     - COUCHBASE_PASS="password"
   matrix:
     - COUCHBASE="couchbase4"
-    - COUCHBASE="couchbase3"
 before_script:
   - ./dockers/up.sh
 script:

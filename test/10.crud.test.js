@@ -86,8 +86,8 @@ describe('Couchbase CRUD', () => {
   describe('Find by ID', () => {
     let id3;
 
-    before(() => {
-      return Person.create(persons[0]);
+    before(done => {
+      Person.create(persons[0], done);
     });
 
     before(() => {
@@ -271,19 +271,15 @@ describe('Couchbase CRUD', () => {
   });
 
   describe('Find multiple', () => {
-    before((done) => {
+    before(done => {
       ds.autoupdate(done);
     });
 
-    before(() => {
-      return Person.create(persons[0]);
+    before(done => {
+      return Person.create(persons, done);
     });
 
-    before(() => {
-      return Person.create(persons[1]);
-    });
-
-    after((done) => {
+    after(done => {
       flush('test_bucket', done);
     });
 
