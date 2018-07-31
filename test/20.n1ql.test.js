@@ -4,14 +4,25 @@ const should = require('should');
 const init = require('./init');
 const flush = require('./flush');
 
-describe.only('Couchbase N1QL Query', () => {
+describe('Couchbase N1QL Query', () => {
 
   let ds;
   let Person;
   let persons;
-
+  const config = {
+    cluster: {
+      url: process.env.COUCHBASE_URL || 'couchbase://localhost',
+      options: {}
+    },
+    bucket: {
+      name: 'test_bucket',
+      password: '',
+      operationTimeout: 60 * 1000
+    },
+    experiment: ['n1ql']
+  };
   before(done => {
-    init.getDataSource(null, (err, res) => {
+    init.getDataSource(config, (err, res) => {
       if (err) {
         return done(err);
       }

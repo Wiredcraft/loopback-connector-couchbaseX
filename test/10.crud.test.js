@@ -86,8 +86,8 @@ describe('Couchbase CRUD', () => {
   describe('Find by ID', () => {
     let id3;
 
-    before(done => {
-      Person.create(persons[0], done);
+    before(() => {
+      return Person.create(persons[0]);
     });
 
     before(() => {
@@ -275,12 +275,20 @@ describe('Couchbase CRUD', () => {
       ds.autoupdate(done);
     });
 
-    before(done => {
-      return Person.create(persons, done);
+    before(() => {
+      return Person.create(persons[0]);
+    });
+
+    before(() => {
+      return Person.create(persons[1]);
     });
 
     after(done => {
       flush('test_bucket', done);
+    });
+
+    it('wait for 1 seconds', done => {
+      setTimeout(done, 1000);
     });
 
     it('can find 2 instances by id', () => {
