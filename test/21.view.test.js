@@ -38,18 +38,22 @@ describe('Couchbase Dynamic View Query', () => {
       persons = [{
         id: '0',
         name: 'Charlie',
-        age: 24
+        age: 24,
+        _type: 'Person'
       }, {
         id: '1',
         name: 'Mary',
-        age: 24
+        age: 24,
+        _type: 'Person'
       }, {
         id: '2',
         name: 'David',
-        age: 24
+        age: 24,
+        _type: 'Person'
       }, {
         name: 'Jason',
-        age: 44
+        age: 44,
+        _type: 'Person'
       }];
       ds.autoupdate().then(() => {
         done();
@@ -86,6 +90,13 @@ describe('Couchbase Dynamic View Query', () => {
         person.id.should.equal('0');
         person.name.should.equal('Charlie');
         person.age.should.equal(24);
+      });
+    });
+
+    it('can limit the return length', () => {
+      return Person.find({ limit: 2 }).then(persons => {
+        should.exist(persons);
+        persons.length.should.equal(2);
       });
     });
 
