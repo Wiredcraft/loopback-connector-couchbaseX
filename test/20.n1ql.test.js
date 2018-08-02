@@ -101,6 +101,34 @@ describe('Couchbase N1QL Query', function() {
     });
   });
 
+  it('can order by age asc', () => {
+    return Person.find({ order: 'age ASC' }).then(persons => {
+      should.exist(persons);
+      persons[0].age.should.equal(24);
+      persons[3].age.should.equal(44);
+      persons.length.should.equal(4);
+    });
+  });
+
+  it('can order by age desc', () => {
+    return Person.find({ order: 'age DESC' }).then(persons => {
+      should.exist(persons);
+      persons[3].age.should.equal(24);
+      persons[0].age.should.equal(44);
+      persons.length.should.equal(4);
+    });
+  });
+
+  it('can order by age and name desc', () => {
+    return Person.find({ order: ['age DESC', 'name DESC'] }).then(persons => {
+      should.exist(persons);
+      persons[3].age.should.equal(24);
+      persons[0].age.should.equal(44);
+      persons[1].name.should.equal('Mary');
+      persons.length.should.equal(4);
+    });
+  });
+
   it('only show specific fields', () => {
     return Person.find({ fields: { name: true, age: false }, limit: 1 }).then(([person]) => {
       should.exist(person);
