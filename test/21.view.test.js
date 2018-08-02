@@ -100,6 +100,13 @@ describe('Couchbase Dynamic View Query', () => {
       });
     });
 
+    it('can skip the return', () => {
+      return Person.find({ skip: 3 }).then(persons => {
+        should.exist(persons);
+        persons.length.should.equal(1);
+      });
+    });
+
     it('can find a saved instance by multipe filter', () => {
       return Person.find({ where: { name: 'Charlie', age: 24 } }).then(([person]) => {
         should.exist(person);

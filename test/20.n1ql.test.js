@@ -94,6 +94,13 @@ describe('Couchbase N1QL Query', function() {
     });
   });
 
+  it('can skip the return', () => {
+    return Person.find({ skip: 3 }).then(persons => {
+      should.exist(persons);
+      persons.length.should.equal(1);
+    });
+  });
+
   it('only show specific fields', () => {
     return Person.find({ fields: { name: true, age: false }, limit: 1 }).then(([person]) => {
       should.exist(person);
