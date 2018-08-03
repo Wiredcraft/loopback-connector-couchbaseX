@@ -49,7 +49,7 @@ describe('Couchbase N1QL Query', function() {
         }, {
           id: '2',
           name: 'David',
-          age: 24
+          age: 34
         }, {
           name: 'Jason',
           age: 44
@@ -124,7 +124,7 @@ describe('Couchbase N1QL Query', function() {
       should.exist(persons);
       persons[3].age.should.equal(24);
       persons[0].age.should.equal(44);
-      persons[1].name.should.equal('Mary');
+      persons[1].name.should.equal('David');
       persons.length.should.equal(4);
     });
   });
@@ -160,6 +160,15 @@ describe('Couchbase N1QL Query', function() {
       persons.length.should.equal(1);
       should.exist(persons);
       persons[0].name.should.equal('Charlie');
+    });
+  });
+
+  it('can range query, 30 < name < 50', () => {
+    return Person.find({ where: { age: { gt: 30, lt: 50 } }, order: 'age DESC' }).then(persons => {
+      persons.length.should.equal(2);
+      should.exist(persons);
+      persons[0].name.should.equal('Jason');
+      persons[1].name.should.equal('David');
     });
   });
 
