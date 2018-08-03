@@ -147,6 +147,22 @@ describe('Couchbase N1QL Query', function() {
     });
   });
 
+  it('can pattern match via regular expression, /^C+.*/', () => {
+    return Person.find({ where: { name: { regexp: /^C+.*/ } } }).then(persons => {
+      persons.length.should.equal(1);
+      should.exist(persons);
+      persons[0].name.should.equal('Charlie');
+    });
+  });
+
+  it('can pattern match via regular expression string, ^C+.*', () => {
+    return Person.find({ where: { name: { regexp: '^C+.*' } } }).then(persons => {
+      persons.length.should.equal(1);
+      should.exist(persons);
+      persons[0].name.should.equal('Charlie');
+    });
+  });
+
   it('only show specific fields', () => {
     return Person.find({ fields: { name: true, age: false }, limit: 1 }).then(([person]) => {
       should.exist(person);
