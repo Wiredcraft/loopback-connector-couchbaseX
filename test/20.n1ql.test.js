@@ -129,6 +129,24 @@ describe('Couchbase N1QL Query', function() {
     });
   });
 
+  it('can get some person name like Cha%', () => {
+    return Person.find({ where: { name: { like: 'Cha%' } } }).then(persons => {
+      persons.length.should.equal(1);
+      should.exist(persons);
+      persons[0].name.should.equal('Charlie');
+    });
+  });
+
+  it('can get some person name not like Cha%', () => {
+    return Person.find({ where: { name: { nlike: 'Cha%' } } }).then(persons => {
+      persons.length.should.equal(3);
+      should.exist(persons);
+      persons[0].name.should.not.equal('Charlie');
+      persons[1].name.should.not.equal('Charlie');
+      persons[2].name.should.not.equal('Charlie');
+    });
+  });
+
   it('only show specific fields', () => {
     return Person.find({ fields: { name: true, age: false }, limit: 1 }).then(([person]) => {
       should.exist(person);
