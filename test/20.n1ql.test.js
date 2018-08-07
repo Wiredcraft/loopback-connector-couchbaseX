@@ -172,6 +172,35 @@ describe('Couchbase N1QL Query', function() {
     });
   });
 
+  it('can find all person who age is not 24', () => {
+    return Person.find({ where: { age: { neq: 44 } } }).then(persons => {
+      persons.length.should.equal(3);
+      should.exist(persons);
+      persons[0].age.should.not.equal(44);
+      persons[1].age.should.not.equal(44);
+      persons[2].age.should.not.equal(44);
+    });
+  });
+
+  it('can filter by complex AND & OR condition', () => {
+    return Person.find(
+      { where: {
+          and: [
+            { age: { gt: 10 } },
+            { age: { lt: 40 } }],
+          or: [
+            { name: 'Charlie' },
+            { name: 'Mary' }]
+        },
+        order: 'name ASC' })
+        .then(persons => {
+      should.exist(persons);
+      persons.length.should.equal(3);
+      persons[0].name.should.equal('Charlie');
+      persons[1].name.should.equal('David');
+      persons[2].name.should.equal('Mary');
+    });
+  });
   it('only show specific fields', () => {
     return Person.find({ fields: { name: true, age: false }, limit: 1 }).then(([person]) => {
       should.exist(person);
@@ -179,5 +208,4 @@ describe('Couchbase N1QL Query', function() {
       should.not.exist(person.age);
     });
   });
-
 });
