@@ -3,21 +3,22 @@
 var Promise = require('bluebird');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var config = {
+exports.config = {
   cluster: {
     url: process.env.COUCHBASE_URL || 'couchbase://localhost',
+    username: 'Administrator',
+    password: 'password',
     options: {}
   },
   bucket: {
     name: 'test_bucket',
-    password: '',
     operationTimeout: 60 * 1000
   }
 };
 
 exports.getDataSource = function(customConfig, callback) {
   var promise = new Promise(function(resolve, reject) {
-    var db = new DataSource(require('../'), customConfig || config);
+    var db = new DataSource(require('../'), customConfig || exports.config);
     db.log = function(a) {
       console.log(a);
     };

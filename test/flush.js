@@ -7,6 +7,8 @@
 const Promise = require('bluebird');
 const couchbase = require('couchbase');
 
+const init = require('./init');
+
 const mapById = `function(doc, meta) {
   emit(doc.id, null);
 }`;
@@ -21,7 +23,8 @@ const designDoc = {
 module.exports = flush;
 
 function flush(bucketName, done) {
-  const cluster = new couchbase.Cluster(process.env.COUCHBASE_URL || 'couchbase://localhost');
+  const cluster = new couchbase.Cluster(process.env.COUCHBASE_URL || init.config.cluster.url);
+  cluster.authenticate(init.config.cluster.username, init.config.cluster.password);
   const bucket = cluster.openBucket(bucketName, (err) => {
     if (err) {
       return done(err);

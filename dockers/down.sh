@@ -3,7 +3,7 @@ set -ev
 
 # Environment variables.
 NODE_ENV=${NODE_ENV:-development}
-COUCHBASE=${COUCHBASE:-couchbase4}
+COUCHBASE=${COUCHBASE:-couchbase5}
 COUCHBASE_USER=${COUCHBASE_USER:-Administrator}
 COUCHBASE_PASS=${COUCHBASE_PASS:-password}
 

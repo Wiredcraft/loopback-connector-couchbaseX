@@ -1,7 +1,7 @@
 {
-  "name": "loopback-connector-couchbase3",
-  "version": "0.5.0",
-  "description": "LoopBack Couchbase 3.x Connector",
+  "name": "loopback-connector-couchbase5",
+  "version": "0.0.2",
+  "description": "LoopBack Couchbase 5.x Connector",
   "author": {
     "name": "Wiredcraft",
     "email": "info@wiredcraft.com",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/Wiredcraft/loopback-connector-couchbase3",
   "dependencies": {
     "bluebird": "^3.5.1",
-    "couchbase": "^2.4.2",
+    "couchbase": "^2.5.0",
     "debug": "^3.1.0",
     "loopback-connector": "^4.4.0",
     "loopback-connector-nosql": "^0.2.0",

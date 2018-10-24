@@ -77,7 +77,6 @@ describe('Couchbase connector', () => {
   it('can connect.', (done) => {
     connector.connect(done);
   });
-
 });
 
 describe('Couchbase ping', () => {
@@ -149,11 +148,13 @@ describe('Couchbase ping', () => {
     init.getDataSource({
       cluster: {
         url: process.env.COUCHBASE_URL || 'couchbase://localhost',
+        username: 'Administrator',
+        password: 'password',
         options: {}
       },
       bucket: {
         name: 'test_ping',
-        password: ''
+        operationTimeout: 1000
       }
     }, (err, res) => {
       if (err) {
@@ -162,7 +163,7 @@ describe('Couchbase ping', () => {
       _ds = res;
       const pingConnector = res.connector;
       pingConnector.connect();
-      pingConnector.clusterManager(process.env.COUCHBASE_USER, process.env.COUCHBASE_PASS)
+      pingConnector.clusterManager('Administrator', 'password')
         .call('removeBucketAsync', 'test_ping').then(() => {
           pingConnector.ping((err, res) => {
             should.exist(err);
