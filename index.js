@@ -1,1 +1,1 @@
-module.exports = require('./lib/couchbase5');
+module.exports = require('./lib/couchbaseX');

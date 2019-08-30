@@ -1,4 +1,4 @@
-# loopback-connector-couchbase5
+# loopback-connector-couchbaseX
 
 This is a Couchbase connector node module for [Loopback](http://loopback.io/) with [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler). Without N1QL for now.
 
@@ -7,7 +7,7 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 ### Install
 
 ```
-npm install loopback-connector-couchbase5 --save
+npm install loopback-connector-couchbaseX --save
 ```
 
 ### Config

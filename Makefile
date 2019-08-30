@@ -1,7 +1,6 @@
 ENV = NODE_ENV=test DEBUG=loopback:connector:*
 MOCHA = ./node_modules/.bin/_mocha
-MOCHA_OPTS = -b --timeout 10000 --reporter spec --exit
-TESTS = test/*.test.js
+MOCHA_OPTS = -b --timeout 20000 --reporter spec --exit
 ISTANBUL = ./node_modules/.bin/istanbul
 COVERALLS = ./node_modules/.bin/coveralls
 
@@ -12,12 +11,30 @@ install:
 lint:
 	@echo "Linting..."
 	@./node_modules/.bin/jscs index.js lib test
+docker-up-cb5:
+	@./dockers/up.sh cb5
+test-cb5:
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb5.test.js
+docker-up-cb4:
+	@./dockers/up.sh cb4
+test-cb4:
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb4.test.js
 test: lint
 	@echo "Testing..."
-	@$(ENV) $(MOCHA) $(MOCHA_OPTS) $(TESTS)
+	@./dockers/up.sh cb5
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb5.test.js
+	@./dockers/down.sh cb5
+	@./dockers/up.sh cb4
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb4.test.js
+	@./dockers/down.sh cb4
 test-cov: lint
 	@echo "Testing..."
-	@$(ENV) $(ISTANBUL) cover $(MOCHA) -- $(MOCHA_OPTS) $(TESTS)
+	@./dockers/up.sh cb5
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb5.test.js
+	@./dockers/down.sh cb5
+	@./dockers/up.sh cb4
+	@$(ENV) $(MOCHA) $(MOCHA_OPTS) test/cb4.test.js
+	@./dockers/down.sh cb4
 send-coveralls:
 	@cat ./coverage/lcov.info | $(COVERALLS) --verbose
 test-coveralls: test-cov send-coveralls

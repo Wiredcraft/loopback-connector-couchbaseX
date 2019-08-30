@@ -46,6 +46,7 @@
   },
   "scripts": {
     "benchmarks": "make benchmarks",
-    "test": "make test"
+    "test": "make test",
+    "down": "./dockers/down.sh cb5 && ./dockers/down.sh cb4"
   }
 }
