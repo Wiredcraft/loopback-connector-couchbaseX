@@ -92,7 +92,6 @@ describe('Couchbase test', () => {
   });
 
   describe('Couchbase ping', () => {
-
     let ds;
     let connector;
 
@@ -264,7 +263,7 @@ describe('Couchbase test', () => {
 
     describe('Find by ID', () => {
       let id3;
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
         await Person.create(persons[3]).then((person) => {
           id3 = person.id;
@@ -319,7 +318,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Destroy', () => {
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
       });
       after((done) => {
@@ -344,7 +343,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Destroy by ID', () => {
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
       });
       after((done) => {
@@ -375,7 +374,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Update or Create', () => {
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
       });
       after((done) => {
@@ -408,7 +407,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Save', () => {
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
       });
       after((done) => {
@@ -485,7 +484,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Find multiple', () => {
-      before(async () => {
+      before(async() => {
         await Person.create(persons[0]);
         await Person.create(persons[1]);
       });
