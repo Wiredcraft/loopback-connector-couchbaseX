@@ -8,9 +8,10 @@ install:
 	@echo "Installing..."
 	@npm install
 	@npm prune
-lint:
-	@echo "Linting..."
-	@./node_modules/.bin/jscs index.js lib test
+lint: lint-js
+lint-js:
+	@echo "Linting JavaScript..."
+	@$(BIN)/eslint . --fix
 docker-up-cb5:
 	@./dockers/up.sh cb5
 test-cb5:

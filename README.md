@@ -10,14 +10,16 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 npm install loopback-connector-couchbaseX --save
 ```
 
-### Config
+### DataSource Config in LoopBack
 
+- For Couchbase version >= 5, as default
 ```
 # datasources.json
 {
   "testDs": {
     "name": "testDs",
     "connector": "couchbase5",
+    "version": 5,  // optional
     "cluster": {
       "url": "couchbase://localhost",
       "username": "username",
@@ -31,16 +33,44 @@ npm install loopback-connector-couchbaseX --save
 }
 ```
 
-## Dev
-
+- For Couchbase version < 5
 ```
-export COUCHBASE="couchbase5"
-export COUCHBASE_USER="Administrator"
-export COUCHBASE_PASS="password"
-./dockers/start-couchbase.sh
+# datasources.json
+{
+  "testDs": {
+    "name": "testDs",
+    "connector": "couchbase5",
+    "version": 3,
+    "cluster": {
+      "url": "couchbase://localhost",
+      "options": {}
+    },
+    "bucket": {
+      "name": "test_bucket",
+      "password": ""
+    }
+  }
+}
 ```
 
 ## Test
 
-precheck: couchbase server is runing with two buckets named `test_bucket`, `test_ping` and enabled its flush feature.
-run: `npm test`
+`yarn test`
+
+## Summary
+
+project  : loopback-connector-couchbaseX
+repo age : 4 years
+active   : 57 days
+commits  : 112
+files    : 40
+authors  :
+   63  Makara Wang        56.2%
+   27  CCharlieLi         24.1%
+    7  chopperlee         6.2%
+    4  Xavier Zhou        3.6%
+    3  Leo Zhou           2.7%
+    3  wwayne             2.7%
+    2  greenkeeperio-bot  1.8%
+    2  xavier             1.8%
+    1  Marc Bachmann      0.9%
