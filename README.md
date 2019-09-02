@@ -14,12 +14,13 @@ npm install loopback-connector-couchbaseX --save
 
 - For Couchbase version >= 5, as default
 ```
+Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-authentication-overview.html
 # datasources.json
 {
   "testDs": {
     "name": "testDs",
-    "connector": "couchbase5",
-    "version": 5,  // optional
+    "connector": "couchbaseX",
+    "version": 5,
     "cluster": {
       "url": "couchbase://localhost",
       "username": "username",
@@ -39,7 +40,7 @@ npm install loopback-connector-couchbaseX --save
 {
   "testDs": {
     "name": "testDs",
-    "connector": "couchbase5",
+    "connector": "couchbaseX",
     "version": 3,
     "cluster": {
       "url": "couchbase://localhost",
@@ -58,7 +59,7 @@ npm install loopback-connector-couchbaseX --save
 `yarn test`
 
 ## Summary
-
+```
 project  : loopback-connector-couchbaseX
 repo age : 4 years
 active   : 57 days
@@ -74,3 +75,4 @@ authors  :
     2  greenkeeperio-bot  1.8%
     2  xavier             1.8%
     1  Marc Bachmann      0.9%
+```

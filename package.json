@@ -1,5 +1,5 @@
 {
-  "name": "loopback-connector-couchbase5",
+  "name": "loopback-connector-couchbaseX",
   "version": "0.6.0",
   "description": "LoopBack Couchbase Connector for 3,5 or higher version",
   "author": {
