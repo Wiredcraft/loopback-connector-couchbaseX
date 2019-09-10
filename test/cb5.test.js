@@ -504,7 +504,7 @@ describe('Couchbase test', () => {
       });
 
       it('cannot find wrong instances by id', () => {
-        return Person.findByIds(['0', 'lorem']).then((res) => {
+        return Person.findByIds(['0', 'lorem', '11111']).then((res) => {
           res.should.be.Array().with.length(1);
           res[0].should.have.property('name', 'Charlie');
         });

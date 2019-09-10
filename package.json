@@ -32,7 +32,7 @@
     "couchbase": "^2.5.0",
     "debug": "^3.1.0",
     "loopback-connector": "^4.4.0",
-    "loopback-connector-nosql": "^0.2.0",
+    "loopback-connector-nosql": "^1.0.0",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
