@@ -4,7 +4,6 @@ const should = require('should');
 
 const init = require('./init');
 const flush = require('./flush');
-console.log(111, process.env.COUCHBASE);
 const config = process.env.COUCHBASE === 'cb5' ? {
   version: 5,
   cluster: {
@@ -167,19 +166,15 @@ describe('Couchbase test', () => {
       const disconnect = () => {
         _ds.disconnect(done);
       };
-      init.getDataSource({
-        version: 5,
-        cluster: {
-          url: 'couchbase://localhost',
-          username: 'Administrator',
-          password: 'password',
-          options: {}
-        },
-        bucket: {
+      const config2 = process.env.COUCHBASE === 'cb5'
+        ? Object.assign({}, config, { bucket: {
           name: 'test_ping',
           operationTimeout: 1000
-        }
-      }, (err, res) => {
+        } }) : Object.assign({}, config, { bucket: {
+          name: 'test_ping',
+          password: ''
+        } });
+      init.getDataSource(config2, (err, res) => {
         if (err) {
           return done(err);
         }
