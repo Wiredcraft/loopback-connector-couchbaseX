@@ -16,5 +16,10 @@ env:
   global:
     - COUCHBASE_USER="Administrator"
     - COUCHBASE_PASS="password"
+  matrix:
+    - COUCHBASE="cb4"
+    - COUCHBASE="cb5"
+before_script:
+  - ./dockers/up.sh $COUCHBASE
 script:
-  - yarn test
+  - make test-coveralls

@@ -56,7 +56,22 @@ Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-aut
 
 ## Test
 
-`yarn test`
+```
+# Docker Up
+./dockers/up.sh cb4
+or
+./dockers/up.sh cb5
+
+# Run Test
+yarn run cb4
+or
+yarn run cb5
+
+# Docker Down
+./dockers/down.sh cb4
+or
+./dockers/down.sh cb5
+```
 
 ## Summary
 ```

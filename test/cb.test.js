@@ -4,7 +4,20 @@ const should = require('should');
 
 const init = require('./init');
 const flush = require('./flush');
-const config = {
+console.log(111, process.env.COUCHBASE);
+const config = process.env.COUCHBASE === 'cb5' ? {
+  version: 5,
+  cluster: {
+    url: 'couchbase://localhost',
+    username: 'Administrator',
+    password: 'password',
+    options: {}
+  },
+  bucket: {
+    name: 'test_bucket',
+    operationTimeout: 60 * 1000
+  }
+} : {
   version: 4,
   cluster: {
     url: 'couchbase://localhost',
@@ -21,11 +34,9 @@ describe('Couchbase test', () => {
   describe('Couchbase connector', () => {
     let ds;
     let connector;
-
     after((done) => {
       flush(config, done);
     });
-
     after((done) => {
       ds.disconnect(done);
     });
@@ -94,7 +105,6 @@ describe('Couchbase test', () => {
   describe('Couchbase ping', () => {
     let ds;
     let connector;
-
     before((done) => {
       init.getDataSource(config, (err, res) => {
         if (err) {
@@ -151,20 +161,23 @@ describe('Couchbase test', () => {
       });
     });
 
+    // one-time tesr
     it('can not response ping with when bucket connected but crashed', (done) => {
       let _ds;
       const disconnect = () => {
         _ds.disconnect(done);
       };
       init.getDataSource({
-        version: 4,
+        version: 5,
         cluster: {
           url: 'couchbase://localhost',
+          username: 'Administrator',
+          password: 'password',
           options: {}
         },
         bucket: {
           name: 'test_ping',
-          password: ''
+          operationTimeout: 1000
         }
       }, (err, res) => {
         if (err) {
@@ -503,7 +516,7 @@ describe('Couchbase test', () => {
       });
 
       it('cannot find wrong instances by id', () => {
-        return Person.findByIds(['0', 'lorem']).then((res) => {
+        return Person.findByIds(['0', 'lorem', '11111']).then((res) => {
           res.should.be.Array().with.length(1);
           res[0].should.have.property('name', 'Charlie');
         });
