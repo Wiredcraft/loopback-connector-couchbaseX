@@ -19,6 +19,7 @@ env:
   matrix:
     - COUCHBASE="cb4"
     - COUCHBASE="cb5"
+    - COUCHBASE="cb6"
 before_script:
   - ./dockers/up.sh $COUCHBASE
 script:

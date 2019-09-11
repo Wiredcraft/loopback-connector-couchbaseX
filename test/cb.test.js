@@ -4,7 +4,18 @@ const should = require('should');
 
 const init = require('./init');
 const flush = require('./flush');
-const config = process.env.COUCHBASE === 'cb5' ? {
+const config = process.env.COUCHBASE === 'cb4' ? {
+  version: 4,
+  cluster: {
+    url: 'couchbase://localhost',
+    options: {}
+  },
+  bucket: {
+    name: 'test_bucket',
+    password: '',
+    operationTimeout: 60 * 1000
+  }
+} : {
   version: 5,
   cluster: {
     url: 'couchbase://localhost',
@@ -14,17 +25,6 @@ const config = process.env.COUCHBASE === 'cb5' ? {
   },
   bucket: {
     name: 'test_bucket',
-    operationTimeout: 60 * 1000
-  }
-} : {
-  version: 4,
-  cluster: {
-    url: 'couchbase://localhost',
-    options: {}
-  },
-  bucket: {
-    name: 'test_bucket',
-    password: '',
     operationTimeout: 60 * 1000
   }
 };
@@ -166,13 +166,13 @@ describe('Couchbase test', () => {
       const disconnect = () => {
         _ds.disconnect(done);
       };
-      const config2 = process.env.COUCHBASE === 'cb5'
+      const config2 = process.env.COUCHBASE === 'cb4'
         ? Object.assign({}, config, { bucket: {
           name: 'test_ping',
-          operationTimeout: 1000
+          password: ''
         } }) : Object.assign({}, config, { bucket: {
           name: 'test_ping',
-          password: ''
+          operationTimeout: 1000
         } });
       init.getDataSource(config2, (err, res) => {
         if (err) {

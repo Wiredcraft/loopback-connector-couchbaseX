@@ -54,6 +54,7 @@
     "test": "make test",
     "cb4": "export COUCHBASE=cb4 && yarn test",
     "cb5": "export COUCHBASE=cb5 && yarn test",
+    "cb6": "export COUCHBASE=cb6 && yarn test",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "make lint",
     "prepush": "make lint"
