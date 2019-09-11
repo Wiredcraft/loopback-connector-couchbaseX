@@ -325,6 +325,70 @@ describe('Couchbase test', () => {
       // TODO: more errors
     });
 
+    describe('Find by view', () => {
+      let id3;
+      before(async() => {
+        await Person.getConnector().autoupdate();
+        await Person.create(persons[0]);
+        await Person.create(persons[3]).then((person) => {
+          id3 = person.id;
+        });
+      });
+      after((done) => {
+        flush(config, done);
+      });
+
+      it('can find a saved instance', () => {
+        return Person.getConnector().view('connector', 'byModelName', { key: 'person', stale: 1 })
+          .then((res) => {
+            res.length.should.be.equal(2);
+            res.forEach(each => {
+              each.id.should.be.ok;
+              each.key.should.be.ok;
+            });
+          });
+      });
+
+      it('can find a saved instance', () => {
+        return Person.getConnector().view('connector', 'byModelName', { key: 'person', limit: 1, stale: 1 })
+          .then((res) => {
+            res.length.should.be.equal(1);
+            res.forEach(each => {
+              each.id.should.be.ok;
+              each.key.should.be.ok;
+            });
+          });
+      });
+
+      it('cannot find an unsaved instance', () => {
+        return Person.getConnector().view('connector', 'byModelName', { key: 'Person', limit: 1, stale: 1 })
+          .then((res) => {
+            res.length.should.be.equal(0);
+          });
+      });
+
+      it('can disconnect', (done) => {
+        ds.disconnect(done);
+      });
+
+      it('can connect', (done) => {
+        ds.connect(done);
+      });
+
+      it('can find a saved instance', () => {
+        return Person.getConnector().view('connector', 'byModelName', { key: 'person', stale: 1 })
+          .then((res) => {
+            res.length.should.be.equal(2);
+            res.forEach(each => {
+              each.id.should.be.ok;
+              each.key.should.be.ok;
+            });
+          });
+      });
+
+      // TODO: more errors
+    });
+
     describe('Destroy', () => {
       before(async() => {
         await Person.create(persons[0]);
