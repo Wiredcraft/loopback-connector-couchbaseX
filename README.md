@@ -61,33 +61,37 @@ Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-aut
 ./dockers/up.sh cb4
 or
 ./dockers/up.sh cb5
+./dockers/up.sh cb6
 
 # Run Test
 yarn run cb4
 or
 yarn run cb5
+yarn run cb6
 
 # Docker Down
 ./dockers/down.sh cb4
 or
 ./dockers/down.sh cb5
+./dockers/down.sh cb6
 ```
 
 ## Summary
 ```
-project  : loopback-connector-couchbaseX
-repo age : 4 years
-active   : 57 days
-commits  : 112
-files    : 40
+project  : loopback-connector-couchbase3
+repo age : 4 years, 1 month
+active   : 61 days
+commits  : 124
+files    : 27
+
 authors  :
-   63  Makara Wang        56.2%
-   27  CCharlieLi         24.1%
-    7  chopperlee         6.2%
-    4  Xavier Zhou        3.6%
-    3  Leo Zhou           2.7%
-    3  wwayne             2.7%
-    2  greenkeeperio-bot  1.8%
-    2  xavier             1.8%
-    1  Marc Bachmann      0.9%
+  63  Makara Wang        50.8%
+  39  CCharlieLi         31.5%
+   7  chopperlee         5.6%
+   4  Xavier Zhou        3.2%
+   3  Leo Zhou           2.4%
+   3  wwayne             2.4%
+   2  greenkeeperio-bot  1.6%
+   2  xavier             1.6%
+   1  Marc Bachmann      0.8%
 ```
