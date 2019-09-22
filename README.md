@@ -10,7 +10,7 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 ### Install
 
 ```
-npm install loopback-connector-couchbaseX --save
+npm install loopback-connector-couchbasex --save
 ```
 
 ### DataSource Config in LoopBack
@@ -22,7 +22,7 @@ Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-aut
 {
   "testDs": {
     "name": "testDs",
-    "connector": "couchbaseX",
+    "connector": "couchbasex",
     "version": 5,
     "cluster": {
       "url": "couchbase://localhost",
@@ -43,7 +43,7 @@ Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-aut
 {
   "testDs": {
     "name": "testDs",
-    "connector": "couchbaseX",
+    "connector": "couchbasex",
     "version": 3,
     "cluster": {
       "url": "couchbase://localhost",
