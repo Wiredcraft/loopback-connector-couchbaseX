@@ -8,8 +8,8 @@ branches:
   only:
     - master
 node_js:
+  - "10"
   - "8"
-  - "6"
 services:
   - docker
 env:
@@ -17,9 +17,10 @@ env:
     - COUCHBASE_USER="Administrator"
     - COUCHBASE_PASS="password"
   matrix:
-    - COUCHBASE="couchbase4"
-    - COUCHBASE="couchbase3"
+    - COUCHBASE="cb4"
+    - COUCHBASE="cb5"
+    - COUCHBASE="cb6"
 before_script:
-  - ./dockers/up.sh
+  - ./dockers/up.sh $COUCHBASE
 script:
   - make test-coveralls

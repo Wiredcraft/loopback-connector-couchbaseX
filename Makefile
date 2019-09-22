@@ -1,17 +1,19 @@
 ENV = NODE_ENV=test DEBUG=loopback:connector:*
+BIN = ./node_modules/.bin
 MOCHA = ./node_modules/.bin/_mocha
-MOCHA_OPTS = -b --timeout 100000 --reporter spec --exit
-TESTS = test/*.test.js
+MOCHA_OPTS = -b --timeout 20000 --reporter spec --exit
 ISTANBUL = ./node_modules/.bin/istanbul
 COVERALLS = ./node_modules/.bin/coveralls
+TESTS = test/*.test.js
 
 install:
 	@echo "Installing..."
 	@npm install
 	@npm prune
-lint:
-	@echo "Linting..."
-	@./node_modules/.bin/jscs index.js lib test
+lint: lint-js
+lint-js:
+	@echo "Linting JavaScript..."
+	@$(BIN)/eslint . --fix
 test: lint
 	@echo "Testing..."
 	@$(ENV) $(MOCHA) $(MOCHA_OPTS) $(TESTS)

@@ -4,8 +4,8 @@ var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');
 
-//see: https://github.com/strongloop/loopback-connector-mongodb/blob/master/benchmarks/index.js
-//db config
+// see: https://github.com/strongloop/loopback-connector-mongodb/blob/master/benchmarks/index.js
+// db config
 var config = require('rc')('loopback', {
   test: {
     couchbase: {
@@ -32,60 +32,60 @@ var uniqVal = 0;
 
 function resetTestState() {
   uniqVal = 0;
-  //Todo.destroyAll();
+  // Todo.destroyAll();
 }
 
 var suite = new Benchmark.Suite;
-suite.on('start', function () {
+suite.on('start', function() {
   console.log('#Begin ', new Date());
 }).add('create', {
   defer: true,
-  fn: function (deferred) {
+  fn: function(deferred) {
     Todo.create({
       content: 'Catch Pokemon ' + uniqVal,
       id: (uniqVal++)
-    }, function () {
+    }, function() {
       deferred.resolve();
     });
   },
   onComplete: resetTestState
 }).add('find', {
   defer: true,
-  fn: function (deferred) {
+  fn: function(deferred) {
     Todo.find({
       id: (uniqVal++)
-    }, function () {
+    }, function() {
       deferred.resolve();
     });
   },
   onComplete: resetTestState
 }).add('update', {
   defer: true,
-  fn: function (deferred) {
+  fn: function(deferred) {
     Todo.update({
       id: (uniqVal++)
     }, {
       content: 'Catch Pokemon ' + uniqVal
-    }, function () {
+    }, function() {
       deferred.resolve();
     });
   },
   onComplete: resetTestState
 }).add('remove', {
   defer: true,
-  fn: function (deferred) {
+  fn: function(deferred) {
     Todo.remove({
       id: (uniqVal++)
-    }, function () {
+    }, function() {
       deferred.resolve();
     });
   },
   onComplete: resetTestState
-}).on('cycle', function (event) {
+}).on('cycle', function(event) {
   console.log(String(event.target));
-}).on('complete', function () {
+}).on('complete', function() {
   console.log('#End ', new Date());
-  //Todo.destroyAll();
+  // Todo.destroyAll();
   process.exit();
 }).run({
   async: true

@@ -1,6 +1,4 @@
-# loopback-connector-couchbase3
-
-[![Build Status](https://travis-ci.org/Wiredcraft/loopback-connector-couchbase3.svg)](https://travis-ci.org/Wiredcraft/loopback-connector-couchbase3) [![Coverage Status](https://coveralls.io/repos/Wiredcraft/loopback-connector-couchbase3/badge.svg?branch=master&service=github)](https://coveralls.io/github/Wiredcraft/loopback-connector-couchbase3?branch=master)
+# loopback-connector-couchbaseX
 
 This is a Couchbase connector node module for [Loopback](http://loopback.io/) with [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler). Without N1QL for now.
 
@@ -9,17 +7,41 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 ### Install
 
 ```
-npm install loopback-connector-couchbase3 --save
+npm install loopback-connector-couchbaseX --save
 ```
 
-### Config
+### DataSource Config in LoopBack
 
+- For Couchbase version >= 5, as default
+```
+Update on CB Authentication @https://docs.couchbase.com/java-sdk/current/sdk-authentication-overview.html
+# datasources.json
+{
+  "testDs": {
+    "name": "testDs",
+    "connector": "couchbaseX",
+    "version": 5,
+    "cluster": {
+      "url": "couchbase://localhost",
+      "username": "username",
+      "password": "password",
+      "options": {}
+    },
+    "bucket": {
+      "name": "test_bucket"
+    }
+  }
+}
+```
+
+- For Couchbase version < 5
 ```
 # datasources.json
 {
-  "couchbaseTestBucket": {
-    "name": "couchbaseTestBucket",
-    "connector": "couchbase3",
+  "testDs": {
+    "name": "testDs",
+    "connector": "couchbaseX",
+    "version": 3,
     "cluster": {
       "url": "couchbase://localhost",
       "options": {}
@@ -32,36 +54,44 @@ npm install loopback-connector-couchbase3 --save
 }
 ```
 
-## Dev
-
-```
-export COUCHBASE="couchbase4"
-export COUCHBASE_USER="Administrator"
-export COUCHBASE_PASS="password"
-./dockers/start-couchbase.sh
-```
-
 ## Test
 
-precheck: couchbase server is runing with two buckets named `test_bucket`, `test_ping` and enabled its flush feature.
-run: `npm test`
-
-## Git Summary
-
 ```
- project  : loopback-connector-couchbase3
- repo age : 2 years, 2 months
- active   : 53 days
- commits  : 106
- files    : 38
- authors  :
-    59  Makara Wang        55.7%
-    25  CCharlieLi         23.6%
-     7  chopperlee         6.6%
-     4  Xavier Zhou        3.8%
-     3  Leo Zhou           2.8%
-     3  wwayne             2.8%
-     2  greenkeeperio-bot  1.9%
-     2  xavier             1.9%
-     1  Marc Bachmann      0.9%
+# Docker Up
+./dockers/up.sh cb4
+or
+./dockers/up.sh cb5
+./dockers/up.sh cb6
+
+# Run Test
+yarn run cb4
+or
+yarn run cb5
+yarn run cb6
+
+# Docker Down
+./dockers/down.sh cb4
+or
+./dockers/down.sh cb5
+./dockers/down.sh cb6
+```
+
+## Summary
+```
+project  : loopback-connector-couchbase3
+repo age : 4 years, 1 month
+active   : 61 days
+commits  : 124
+files    : 27
+
+authors  :
+  63  Makara Wang        50.8%
+  39  CCharlieLi         31.5%
+   7  chopperlee         5.6%
+   4  Xavier Zhou        3.2%
+   3  Leo Zhou           2.4%
+   3  wwayne             2.4%
+   2  greenkeeperio-bot  1.6%
+   2  xavier             1.6%
+   1  Marc Bachmann      0.8%
 ```

@@ -1,1 +1,3 @@
-module.exports = require('./lib/couchbase3');
+'use strict';
+
+module.exports = require('./lib/couchbaseX');

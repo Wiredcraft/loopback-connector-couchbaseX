@@ -20,9 +20,14 @@ const designDoc = {
 
 module.exports = flush;
 
-function flush(bucketName, done) {
-  const cluster = new couchbase.Cluster(process.env.COUCHBASE_URL || 'couchbase://localhost');
-  const bucket = cluster.openBucket(bucketName, (err) => {
+function flush(config, done) {
+  const cluster = new couchbase.Cluster(config.cluster.url);
+  try {
+    if (config.cluster.username && config.cluster.password) {
+      cluster.authenticate(config.cluster.username, config.cluster.password);
+    }
+  } catch (e) {}
+  const bucket = cluster.openBucket(config.bucket.name, (err) => {
     if (err) {
       return done(err);
     }
