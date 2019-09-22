@@ -1,4 +1,24 @@
 
+v1.0.0 / 2019-09-22
+==================
+
+  * test: add test for query view
+  * docs: update readme
+  * test: add test for CB6
+  * chore: update getMulti handler
+  * fix: fix test
+  * test: update test script
+  * chore: update nosql version, update findByIds implemtnation
+  * chore: use getMulti as findByIds
+  * chore: minor update
+  * chore: update config file
+  * chore: remove jscs, update CI script
+  * fix: remove useless code
+  * chore: lint code style
+  * chore: remove example folder
+  * chore: rename to couchbaseX to be compatible with all cb versions
+  * refactor: add support for couchbase5
+
 0.5.0 / 2017-11-08
 ==================
 

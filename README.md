@@ -1,5 +1,8 @@
 # loopback-connector-couchbaseX
 
+[![Build Status](https://travis-ci.org/Wiredcraft/loopback-connector-couchbase3.svg?branch=master)](https://travis-ci.org/Wiredcraft/loopback-connector-couchbase3)
+[![Coverage Status](https://coveralls.io/repos/github/Wiredcraft/loopback-connector-couchbase3/badge.svg?branch=master)](https://coveralls.io/github/Wiredcraft/loopback-connector-couchbase3?branch=master)
+
 This is a Couchbase connector node module for [Loopback](http://loopback.io/) with [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler). Without N1QL for now.
 
 ## How to use
