@@ -326,13 +326,10 @@ describe('Couchbase test', () => {
     });
 
     describe('Find by view', () => {
-      let id3;
       before(async() => {
         await Person.getConnector().autoupdate();
         await Person.create(persons[0]);
-        await Person.create(persons[3]).then((person) => {
-          id3 = person.id;
-        });
+        await Person.create(persons[3]);
       });
       after((done) => {
         flush(config, done);
@@ -349,7 +346,7 @@ describe('Couchbase test', () => {
           });
       });
 
-      it('can find a saved instance', () => {
+      it('can find with limit option', () => {
         return Person.getConnector().view('connector', 'byModelName', { key: 'person', limit: 1, stale: 1 })
           .then((res) => {
             res.length.should.be.equal(1);
@@ -358,6 +355,20 @@ describe('Couchbase test', () => {
               each.key.should.be.ok;
             });
           });
+      });
+
+      it('can find with limit and skip option', async() => {
+        const firstQuery = await Person.getConnector().view('connector', 'byModelName', {
+          key: 'person', limit: 1, skip: 0, stale: 1
+        });
+        const secondQuery = await Person.getConnector().view('connector', 'byModelName', {
+          key: 'person', limit: 1, skip: 1, stale: 1
+        });
+        firstQuery.length.should.be.equal(1);
+        secondQuery.length.should.be.equal(1);
+        console.log('firstQuery = %j\n', firstQuery);
+        console.log('secondQuery = %j\n', secondQuery);
+        firstQuery[0].id.should.not.be.equal(secondQuery[0].id);
       });
 
       it('cannot find an unsaved instance', () => {

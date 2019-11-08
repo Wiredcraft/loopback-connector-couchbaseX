@@ -1,4 +1,4 @@
-ENV = NODE_ENV=test DEBUG=loopback:connector:*
+ENV = NODE_ENV=test
 BIN = ./node_modules/.bin
 MOCHA = ./node_modules/.bin/_mocha
 MOCHA_OPTS = -b --timeout 20000 --reporter spec --exit
