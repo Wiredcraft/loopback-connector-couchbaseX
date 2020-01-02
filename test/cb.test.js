@@ -161,7 +161,7 @@ describe('Couchbase test', () => {
     });
 
     // one-time tesr
-    it('can not response ping with when bucket connected but crashed', (done) => {
+    it.skip('can not response ping with when bucket connected but crashed', (done) => {
       let _ds;
       const disconnect = () => {
         _ds.disconnect(done);
@@ -579,9 +579,11 @@ describe('Couchbase test', () => {
         return Person.findByIds(['0', '1']).then((res) => {
           res.should.be.Array().with.length(2);
           res[0].should.have.property('id', '0');
+          res[0].should.have.key('_cas');
           res[0].should.have.property('name', 'Charlie');
           res[1].should.have.property('id', '1');
           res[1].should.have.property('name', 'Mary');
+          res[1].should.have.key('_cas');
         });
       });
 
@@ -628,17 +630,15 @@ describe('Couchbase test', () => {
       });
 
       it('can find empty when giving empty id array in inq', () => {
-        setTimeout(() => {
-          return Person.find({
-            where: {
-              id: {
-                inq: []
-              }
+        return Person.find({
+          where: {
+            id: {
+              inq: []
             }
-          }).then((res) => {
-            res.should.be.Array().with.length(0);
-          });
-        }, 5000);
+          }
+        }).then((res) => {
+          res.should.be.Array().with.length(0);
+        });
       });
 
       it('can find empty when giving empty id object', () => {
@@ -652,29 +652,18 @@ describe('Couchbase test', () => {
       });
 
       it('can find when giving empty where object', () => {
-        setTimeout(() => {
-          return Person.find({
-            where: {}
-          }).then((res) => {
-            res.should.be.Array().with.length(2);
-          });
-        }, 5000);
+        return Person.find({
+          where: {}
+        }, { stale: 1 }).then((res) => {
+          res.should.be.Array().with.length(2);
+          res[0].should.be.has.key('_cas');
+          res[1]['_cas'].should.be.ok();
+        });
       });
-
-      it('can find when giving empty query object', () => {
-        setTimeout(() => {
-          return Person.find({}).then((res) => {
-            res.should.be.Array().with.length(2);
-          });
-        }, 5000);
-      });
-
       it('can find when giving empty', () => {
-        setTimeout(() => {
-          return Person.find().then((res) => {
-            res.should.be.Array().with.length(2);
-          });
-        }, 5000);
+        return Person.find(null, { state: 1 }).then((res) => {
+          res.should.be.Array().with.length(2);
+        });
       });
 
       // TODO: more errors
