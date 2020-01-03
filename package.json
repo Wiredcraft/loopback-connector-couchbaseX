@@ -41,7 +41,7 @@
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.6",
     "eslint": "^6.2.2",
-    "eslint-config-wcl-backend": "^0.3.0",
+    "eslint-config-wcl-backend": "^0.4.0",
     "husky": "^3.0.4",
     "istanbul": "^0.4.5",
     "loopback-datasource-juggler": "^3.13.0",

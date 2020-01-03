@@ -40,7 +40,7 @@ describe('Couchbase test', () => {
       ds.disconnect(done);
     });
 
-    it('can connect.', (done) => {
+    it('can get connector.', (done) => {
       init.getDataSource(config, (err, res) => {
         if (err) {
           return done(err);
@@ -67,7 +67,7 @@ describe('Couchbase test', () => {
       });
     });
 
-    it('can disconnect.', (done) => {
+    it('can disconnect with ds.', (done) => {
       ds.disconnect(done);
     });
 
@@ -96,7 +96,7 @@ describe('Couchbase test', () => {
       connector.disconnect(done);
     });
 
-    it('can connect.', (done) => {
+    it('can connect again', (done) => {
       connector.connect(done);
     });
   });
@@ -282,15 +282,6 @@ describe('Couchbase test', () => {
       });
 
       it('can find a saved instance', () => {
-        return Person.findById('0').then((person) => {
-          person.should.be.Object();
-          person.id.should.equal('0');
-          person.name.should.equal('Charlie');
-          person.age.should.equal(24);
-        });
-      });
-
-      it('can find a saved instance', () => {
         return Person.findById(id3).then((person) => {
           person.should.be.Object();
           person.id.should.equal(id3);
@@ -311,15 +302,6 @@ describe('Couchbase test', () => {
 
       it('can connect', (done) => {
         ds.connect(done);
-      });
-
-      it('can find a saved instance', () => {
-        return Person.findById('0').then((person) => {
-          person.should.be.Object();
-          person.id.should.equal('0');
-          person.name.should.equal('Charlie');
-          person.age.should.equal(24);
-        });
       });
 
       // TODO: more errors
@@ -366,8 +348,6 @@ describe('Couchbase test', () => {
         });
         firstQuery.length.should.be.equal(1);
         secondQuery.length.should.be.equal(1);
-        console.log('firstQuery = %j\n', firstQuery);
-        console.log('secondQuery = %j\n', secondQuery);
         firstQuery[0].id.should.not.be.equal(secondQuery[0].id);
       });
 
@@ -386,7 +366,7 @@ describe('Couchbase test', () => {
         ds.connect(done);
       });
 
-      it('can find a saved instance', () => {
+      it('can find a list', () => {
         return Person.getConnector().view('connector', 'byModelName', { key: 'person', stale: 1 })
           .then((res) => {
             res.length.should.be.equal(2);
