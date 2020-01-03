@@ -1,5 +1,5 @@
 'use strict';
-
+/* eslint-disable no-console */
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');
