@@ -366,8 +366,6 @@ describe('Couchbase test', () => {
         });
         firstQuery.length.should.be.equal(1);
         secondQuery.length.should.be.equal(1);
-        console.log('firstQuery = %j\n', firstQuery);
-        console.log('secondQuery = %j\n', secondQuery);
         firstQuery[0].id.should.not.be.equal(secondQuery[0].id);
       });
 
@@ -592,6 +590,13 @@ describe('Couchbase test', () => {
           res.should.be.Array().with.length(1);
           res[0].should.have.property('name', 'Charlie');
         });
+      });
+
+      it('findById and findByIds will return object and array', async() => {
+        const res = await Person.findByIds(['0']);
+        res.should.be.Array().with.length(1);
+        const record = await Person.findById('0');
+        record.should.be.Object().has.key('_cas');
       });
 
       it('cannot find when giving a empty array of ids', () => {

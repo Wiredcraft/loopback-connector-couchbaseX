@@ -1,8 +1,8 @@
 'use strict';
 
-require('should');
+const should = require('should');
 
-const { objToArr } = require('../lib/utils');
+const { objToArr, unpackRes } = require('../lib/utils');
 describe('utils', () => {
   describe('objToArr', () => {
     it('should convert to array with id and value if existing document', () => {
@@ -25,6 +25,28 @@ describe('utils', () => {
       const output = objToArr(input);
       output.should.be.Array();
       output.should.be.eql([]);
+    });
+  });
+  describe('unpackRes', () => {
+    it('unpackRes should return object', () => {
+      const input = {
+        value: {
+          foo: 'bar'
+        },
+        cas: '1512352'
+      };
+      const output = unpackRes(input);
+      output.should.be.Object().deepEqual({ foo: 'bar', _cas: '1512352' });
+    });
+    it('unpackRes should return null withoud cas key', () => {
+      const input = {
+        value: {
+          foo: 'bar'
+        }
+      };
+      const output = unpackRes(input);
+      should(output).be.null();
+      should(unpackRes(null)).be.null();
     });
   });
 });
