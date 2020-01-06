@@ -574,6 +574,13 @@ describe('Couchbase test', () => {
         });
       });
 
+      it('findById and findByIds will return object and array', async() => {
+        const res = await Person.findByIds(['0']);
+        res.should.be.Array().with.length(1);
+        const record = await Person.findById('0');
+        record.should.be.Object().has.key('_cas');
+      });
+
       it('cannot find when giving a empty array of ids', () => {
         return Person.findByIds([]).then((res) => {
           res.should.be.Array().with.length(0);
