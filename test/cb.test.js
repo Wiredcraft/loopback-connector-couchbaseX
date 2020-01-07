@@ -457,6 +457,30 @@ describe('Couchbase test', () => {
         });
       });
 
+      it('update and creat should filter _cas', async() => {
+        const record = {
+          id: '0',
+          name: 'Charlie II',
+          age: 24,
+          _cas: 'somethings'
+        };
+        await Person.destroyById(record.id);
+        await Person.create(record);
+        const connection = await Person.getConnector()._connection;
+        const { value } = await connection.getAsync(record.id);
+        value.should.have.property('name', record.name);
+        value.should.not.have.property('_cas');
+        await Person.update({ id: record.id }, Object.assign({ _type: 'test' }, record));
+        const result = await connection.getAsync(record.id);
+        const currentValue = result.value;
+        currentValue.should.have.property('name', record.name);
+        currentValue.should.not.have.property('_type');
+        currentValue.should.not.have.property('_cas');
+        const people = await Person.findById(record.id);
+        people.should.be.Object();
+        people.should.have.property('_cas').which.is.Object();
+      });
+
       it('can create an instance', () => {
         return Person.updateOrCreate(persons[1]).then((res) => {
           res.should.be.Object();
