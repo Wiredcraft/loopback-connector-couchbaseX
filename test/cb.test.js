@@ -474,6 +474,7 @@ describe('Couchbase test', () => {
         const result = await connection.getAsync(record.id);
         const currentValue = result.value;
         currentValue.should.have.property('name', record.name);
+        currentValue.should.not.have.property('_type');
         currentValue.should.not.have.property('_cas');
         const people = await Person.findById(record.id);
         people.should.be.Object();
