@@ -470,11 +470,10 @@ describe('Couchbase test', () => {
         const { value } = await connection.getAsync(record.id);
         value.should.have.property('name', record.name);
         value.should.not.have.property('_cas');
-        await Person.update({ id: record.id }, Object.assign({ _type: 'test' }, record));
+        await Person.update({ id: record.id }, record);
         const result = await connection.getAsync(record.id);
         const currentValue = result.value;
         currentValue.should.have.property('name', record.name);
-        currentValue.should.not.have.property('_type');
         currentValue.should.not.have.property('_cas');
         const people = await Person.findById(record.id);
         people.should.be.Object();
