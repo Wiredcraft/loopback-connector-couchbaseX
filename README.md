@@ -7,11 +7,38 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 
 ## How to use
 
+
 ### Install
 
 ```
 npm install loopback-connector-couchbasex --save
 ```
+
+### Notice
+
+- Model's function `update` play the same role as `updateAttributes` which cause by `loopback-datasource-juggler`.
+
+`PUT` and `PATCH` both do the same thing that merge incoming data with current record.
+
+ ```
+ update = Object.assign(current, incoming)
+ ```
+
+Discussion of `update` and `updateAttribetes` , see: [https://groups.google.com/forum/#!topic/loopbackjs/-1jarvOuh8k](https://groups.google.com/forum/#!topic/loopbackjs/-1jarvOuh8k)
+
+- since version 1.0.0 the default vaule of  `stale` was set to `ok` in viewQuery.
+
+If the update condition field isn't `id`  you must put `stale` in `options` parameter to make sure you get the correct data, like:
+
+```
+const where = { name: 'kitten' }
+const update = { ...data }
+options = { stale: 1 };
+SomeModel.update(where, update, options);
+```
+
+About **[stale](https://docs.couchbase.com/server/6.5/learn/views/views-operation.html#index-stale)**
+
 
 ### DataSource Config in LoopBack
 
@@ -78,6 +105,9 @@ or
 ./dockers/down.sh cb5
 ./dockers/down.sh cb6
 ```
+
+
+
 
 ## Summary
 ```
