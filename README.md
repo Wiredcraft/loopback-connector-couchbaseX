@@ -14,7 +14,7 @@ This is a Couchbase connector node module for [Loopback](http://loopback.io/) wi
 npm install loopback-connector-couchbasex --save
 ```
 
-### Notice
+### Caveat
 
 - Model's function `update` play the same role as `updateAttributes` which cause by `loopback-datasource-juggler`.
 
@@ -28,12 +28,12 @@ Discussion of `update` and `updateAttribetes` , see: [https://groups.google.com/
 
 - since version 1.0.0 the default vaule of  `stale` was set to `ok` in viewQuery.
 
-If the update condition field isn't `id`  you must put `stale` in `options` parameter to make sure you get the correct data, like:
+If the update key is not `id`, you must set `stale=before` in `options` parameter to make sure you get the correct data to merge incoming data, like:
 
 ```
-const where = { name: 'kitten' }
-const update = { ...data }
-options = { stale: 1 };
+const where = { name: 'kitten' };
+const update = { ...data };
+options = { stale: before };
 SomeModel.update(where, update, options);
 ```
 

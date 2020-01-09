@@ -57,6 +57,7 @@
     "cb6": "export COUCHBASE=cb6 && yarn test",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "make lint",
-    "prepush": "make lint"
+    "prepush": "make lint",
+    "version": "conventional-changelog -p angular -i History.md -s -r 0 && git add History.md"
   }
 }
