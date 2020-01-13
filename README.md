@@ -1,7 +1,7 @@
 # loopback-connector-couchbaseX
 
-[![Build Status](https://travis-ci.org/Wiredcraft/loopback-connector-couchbasex.svg?branch=master)](https://travis-ci.org/Wiredcraft/loopback-connector-couchbasex)
-[![Coverage Status](https://coveralls.io/repos/github/Wiredcraft/loopback-connector-couchbasex/badge.svg?branch=master)](https://coveralls.io/github/Wiredcraft/loopback-connector-couchbasex?branch=master)
+[![Build Status](https://travis-ci.org/Wiredcraft/loopback-connector-couchbaseX.svg?branch=master)](https://travis-ci.org/Wiredcraft/loopback-connector-couchbaseX)
+[![Coverage Status](https://coveralls.io/repos/github/Wiredcraft/loopback-connector-couchbaseX/badge.svg?branch=master)](https://coveralls.io/github/Wiredcraft/loopback-connector-couchbaseX?branch=master)
 
 This is a Couchbase connector node module for [Loopback](http://loopback.io/) with [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler). Without N1QL for now.
 
@@ -111,7 +111,7 @@ or
 
 ## Summary
 ```
-project  : loopback-connector-couchbasex
+project  : loopback-connector-couchbaseX
 repo age : 4 years, 1 month
 active   : 61 days
 commits  : 124

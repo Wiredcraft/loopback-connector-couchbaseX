@@ -21,12 +21,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Wiredcraft/loopback-connector-couchbase3"
+    "url": "https://github.com/Wiredcraft/loopback-connector-couchbaseX"
   },
   "bugs": {
-    "url": "https://github.com/Wiredcraft/loopback-connector-couchbase3/issues"
+    "url": "https://github.com/Wiredcraft/loopback-connector-couchbaseX/issues"
   },
-  "homepage": "https://github.com/Wiredcraft/loopback-connector-couchbase3",
+  "homepage": "https://github.com/Wiredcraft/loopback-connector-couchbaseX",
   "dependencies": {
     "bluebird": "^3.5.1",
     "couchbase": "^2.5.0",
