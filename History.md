@@ -1,3 +1,12 @@
+## [1.2.3](https://github.com/Wiredcraft/loopback-connector-couchbaseX/compare/v1.2.2...v1.2.3) (2020-02-18)
+
+
+### Bug Fixes
+
+* objToArr with incorrect sequence index array ([b02fe15](https://github.com/Wiredcraft/loopback-connector-couchbaseX/commit/b02fe15))
+
+
+
 ## [1.2.2](https://github.com/Wiredcraft/loopback-connector-couchbaseX/compare/v1.2.1...v1.2.2) (2020-01-21)
 
 
