@@ -11,7 +11,7 @@ describe('utils', () => {
         id2: { value: { baz: 'quz' }, cas: '1512353' },
         id3: { error: { CouchbaseError: 'The key does not exist...' } }
       };
-      const output = objToArr(input);
+      const output = objToArr(input, Object.keys(input));
       output.should.be.Array();
       output.should.be.eql([
         ['id1', { foo: 'bar', _cas: '1512352' }],
@@ -22,7 +22,7 @@ describe('utils', () => {
       const input = {
         id3: { error: { CouchbaseError: 'The key does not exist...' } }
       };
-      const output = objToArr(input);
+      const output = objToArr(input, Object.keys(input));
       output.should.be.Array();
       output.should.be.eql([]);
     });
