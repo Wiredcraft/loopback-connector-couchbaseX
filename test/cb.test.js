@@ -377,6 +377,15 @@ describe('Couchbase test', () => {
           });
       });
 
+      it('can keep options unchanged', () => {
+        let options = { key: 'person', stale: 1 };
+        return Person.getConnector().view('connector', 'byModelName', options)
+          .then((res) => {
+            res.length.should.be.equal(2);
+            options.should.eql({ key: 'person', stale: 1 });
+          });
+      });
+
       // TODO: more errors
     });
 
