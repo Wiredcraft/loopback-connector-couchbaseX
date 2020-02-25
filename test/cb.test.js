@@ -687,5 +687,61 @@ describe('Couchbase test', () => {
 
       // TODO: more errors
     });
+
+    describe('Couchbase setting', () => {
+      it('can update global setting view stale', () => {
+        const config = process.env.COUCHBASE === 'cb4' ? {
+          version: 4,
+          cluster: {
+            url: 'couchbase://localhost',
+            options: {}
+          },
+          stale: 1,
+          bucket: {
+            name: 'test_bucket',
+            password: '',
+            operationTimeout: 60 * 1000
+          }
+        } : {
+          version: 5,
+          cluster: {
+            url: 'couchbase://localhost',
+            username: 'Administrator',
+            password: 'password',
+            options: {}
+          },
+          stale: 1,
+          bucket: {
+            name: 'test_bucket',
+            operationTimeout: 60 * 1000
+          }
+        };
+        let Pet;
+        const pets = [{
+          id: '0',
+          name: 'Lucy',
+          age: 1
+        }, {
+          id: '1',
+          name: 'Coco',
+          age: 2
+        }];
+        return init.getDataSource(config)
+          .then(res => {
+            ds = res;
+            Pet = ds.createModel('pet', {
+              id: {
+                type: String,
+                id: true
+              },
+              name: String,
+              age: Number
+            });
+            return Promise.all([Pet.create(pets[0]), Pet.create(pets[1])]);
+          })
+          .then(() => Pet.getConnector().view('connector', 'byModelName', { key: 'pet' }))
+          .then((res) => res.should.be.Array().with.length(2));
+      });
+    });
   });
 });
