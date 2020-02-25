@@ -689,9 +689,7 @@ describe('Couchbase test', () => {
     });
 
     describe('Couchbase setting', () => {
-      let config;
-      let Pet;
-      it('can global setting view stale', () => {
+      it('can update global setting view stale', () => {
         const config = process.env.COUCHBASE === 'cb4' ? {
           version: 4,
           cluster: {
