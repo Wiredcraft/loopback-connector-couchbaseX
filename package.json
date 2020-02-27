@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-couchbasex",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "LoopBack Couchbase Connector for 3,5 or higher version",
   "author": {
     "name": "Wiredcraft",
@@ -58,6 +58,6 @@
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "make lint",
     "prepush": "make lint",
-    "version": "conventional-changelog -p angular -i History.md -s -r 0 && git add History.md"
+    "version": "conventional-changelog -p angular -i History.md -s -r 1 && git add History.md"
   }
 }

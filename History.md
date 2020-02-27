@@ -1,3 +1,18 @@
+## [1.2.4](https://github.com/Wiredcraft/loopback-connector-couchbaseX/compare/v1.2.3...v1.2.4) (2020-02-27)
+
+
+### Bug Fixes
+
+* immutable view options ([ddf4db2](https://github.com/Wiredcraft/loopback-connector-couchbaseX/commit/ddf4db25))
+* remove unnecessarey setting value checking ([87a65d7](https://github.com/Wiredcraft/loopback-connector-couchbaseX/commit/87a65d7))
+
+
+### Features
+
+* set view stale as global setting ([9800b10](https://github.com/Wiredcraft/loopback-connector-couchbaseX/commit/9800b10))
+
+
+
 ## [1.2.3](https://github.com/Wiredcraft/loopback-connector-couchbaseX/compare/v1.2.2...v1.2.3) (2020-02-18)
 
 
