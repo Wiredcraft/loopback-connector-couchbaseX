@@ -4,30 +4,33 @@ const should = require('should');
 
 const init = require('./init');
 const flush = require('./flush');
-const config = process.env.COUCHBASE === 'cb4' ? {
-  version: 4,
-  cluster: {
-    url: 'couchbase://localhost',
-    options: {}
-  },
-  bucket: {
-    name: 'test_bucket',
-    password: '',
-    operationTimeout: 60 * 1000
-  }
-} : {
-  version: 5,
-  cluster: {
-    url: 'couchbase://localhost',
-    username: 'Administrator',
-    password: 'password',
-    options: {}
-  },
-  bucket: {
-    name: 'test_bucket',
-    operationTimeout: 60 * 1000
-  }
-};
+const config
+  = process.env.COUCHBASE === 'cb4'
+    ? {
+      version: 4,
+      cluster: {
+        url: 'couchbase://localhost',
+        options: {}
+      },
+      bucket: {
+        name: 'test_bucket',
+        password: '',
+        operationTimeout: 60 * 1000
+      }
+    }
+    : {
+      version: 5,
+      cluster: {
+        url: 'couchbase://localhost',
+        username: 'Administrator',
+        password: 'password',
+        options: {}
+      },
+      bucket: {
+        name: 'test_bucket',
+        operationTimeout: 60 * 1000
+      }
+    };
 
 describe('Couchbase test', () => {
   describe('Couchbase connector', () => {
@@ -124,10 +127,13 @@ describe('Couchbase test', () => {
     });
 
     it('can do pingpong with promise style when connected', (done) => {
-      connector.ping().then((res) => {
-        res.should.be.ok;
-        done();
-      }).catch(done);
+      connector
+        .ping()
+        .then((res) => {
+          res.should.be.ok;
+          done();
+        })
+        .catch(done);
     });
 
     it('can do pingpong with callback style when connected', (done) => {
@@ -142,12 +148,15 @@ describe('Couchbase test', () => {
 
     it('can not response ping with promise style when disconnected', (done) => {
       connector.disconnect((err, res) => {
-        connector.ping().then(() => {
-          throw new Error('expected an error');
-        }).catch((err) => {
-          should.exist(err);
-          done();
-        });
+        connector
+          .ping()
+          .then(() => {
+            throw new Error('expected an error');
+          })
+          .catch((err) => {
+            should.exist(err);
+            done();
+          });
       });
     });
 
@@ -166,14 +175,20 @@ describe('Couchbase test', () => {
       const disconnect = () => {
         _ds.disconnect(done);
       };
-      const config2 = process.env.COUCHBASE === 'cb4'
-        ? Object.assign({}, config, { bucket: {
-          name: 'test_ping',
-          password: ''
-        } }) : Object.assign({}, config, { bucket: {
-          name: 'test_ping',
-          operationTimeout: 1000
-        } });
+      const config2
+        = process.env.COUCHBASE === 'cb4'
+          ? Object.assign({}, config, {
+            bucket: {
+              name: 'test_ping',
+              password: ''
+            }
+          })
+          : Object.assign({}, config, {
+            bucket: {
+              name: 'test_ping',
+              operationTimeout: 1000
+            }
+          });
       init.getDataSource(config2, (err, res) => {
         if (err) {
           return done(err);
@@ -181,13 +196,16 @@ describe('Couchbase test', () => {
         _ds = res;
         const pingConnector = res.connector;
         pingConnector.connect();
-        pingConnector.clusterManager('Administrator', 'password')
-          .call('removeBucketAsync', 'test_ping').then(() => {
+        pingConnector
+          .clusterManager('Administrator', 'password')
+          .call('removeBucketAsync', 'test_ping')
+          .then(() => {
             pingConnector.ping((err, res) => {
               should.exist(err);
               disconnect();
             });
-          }).catch(disconnect);
+          })
+          .catch(disconnect);
       });
     });
   });
@@ -210,22 +228,27 @@ describe('Couchbase test', () => {
           name: String,
           age: Number
         });
-        persons = [{
-          id: '0',
-          name: 'Charlie',
-          age: 24
-        }, {
-          id: '1',
-          name: 'Mary',
-          age: 24
-        }, {
-          id: '2',
-          name: 'David',
-          age: 24
-        }, {
-          name: 'Jason',
-          age: 44
-        }];
+        persons = [
+          {
+            id: '0',
+            name: 'Charlie',
+            age: 24
+          },
+          {
+            id: '1',
+            name: 'Mary',
+            age: 24
+          },
+          {
+            id: '2',
+            name: 'David',
+            age: 24
+          },
+          {
+            name: 'Jason',
+            age: 44
+          }
+        ];
         done();
       });
     });
@@ -259,11 +282,14 @@ describe('Couchbase test', () => {
       });
 
       it('cannot create with a duplicate id ', () => {
-        return Person.create(persons[0]).then(() => {
-          throw new Error('expected an error');
-        }, (err) => {
-          should.exist(err);
-        });
+        return Person.create(persons[0]).then(
+          () => {
+            throw new Error('expected an error');
+          },
+          (err) => {
+            should.exist(err);
+          }
+        );
       });
 
       // TODO: more errors
@@ -292,6 +318,23 @@ describe('Couchbase test', () => {
 
       it('cannot find an unsaved instance', () => {
         return Person.findById('1').then((res) => {
+          console.log('nonn res = %j\n', res);
+          should.not.exist(res);
+        });
+      });
+
+      it('cannot find an instance with other model', () => {
+        const Animal = ds.createModel('animal', {
+          id: {
+            type: String,
+            id: true
+          },
+          name: String,
+          gender: String
+        });
+
+        return Animal.findById(id3).then((res) => {
+          console.log('res = %j\n', res);
           should.not.exist(res);
         });
       });
@@ -318,10 +361,11 @@ describe('Couchbase test', () => {
       });
 
       it('can find a saved instance', () => {
-        return Person.getConnector().view('connector', 'byModelName', { key: 'person', stale: 1 })
+        return Person.getConnector()
+          .view('connector', 'byModelName', { key: 'person', stale: 1 })
           .then((res) => {
             res.length.should.be.equal(2);
-            res.forEach(each => {
+            res.forEach((each) => {
               each.id.should.be.ok;
               each.key.should.be.ok;
             });
@@ -329,10 +373,15 @@ describe('Couchbase test', () => {
       });
 
       it('can find with limit option', () => {
-        return Person.getConnector().view('connector', 'byModelName', { key: 'person', limit: 1, stale: 1 })
+        return Person.getConnector()
+          .view('connector', 'byModelName', {
+            key: 'person',
+            limit: 1,
+            stale: 1
+          })
           .then((res) => {
             res.length.should.be.equal(1);
-            res.forEach(each => {
+            res.forEach((each) => {
               each.id.should.be.ok;
               each.key.should.be.ok;
             });
@@ -340,19 +389,38 @@ describe('Couchbase test', () => {
       });
 
       it('can find with limit and skip option', async() => {
-        const firstQuery = await Person.getConnector().view('connector', 'byModelName', {
-          key: 'person', limit: 1, skip: 0, stale: 1
-        });
-        const secondQuery = await Person.getConnector().view('connector', 'byModelName', {
-          key: 'person', limit: 1, skip: 1, stale: 1
-        });
+        const firstQuery = await Person.getConnector().view(
+          'connector',
+          'byModelName',
+          {
+            key: 'person',
+            limit: 1,
+            skip: 0,
+            stale: 1
+          }
+        );
+        const secondQuery = await Person.getConnector().view(
+          'connector',
+          'byModelName',
+          {
+            key: 'person',
+            limit: 1,
+            skip: 1,
+            stale: 1
+          }
+        );
         firstQuery.length.should.be.equal(1);
         secondQuery.length.should.be.equal(1);
         firstQuery[0].id.should.not.be.equal(secondQuery[0].id);
       });
 
       it('cannot find an unsaved instance', () => {
-        return Person.getConnector().view('connector', 'byModelName', { key: 'Person', limit: 1, stale: 1 })
+        return Person.getConnector()
+          .view('connector', 'byModelName', {
+            key: 'Person',
+            limit: 1,
+            stale: 1
+          })
           .then((res) => {
             res.length.should.be.equal(0);
           });
@@ -367,10 +435,11 @@ describe('Couchbase test', () => {
       });
 
       it('can find a list', () => {
-        return Person.getConnector().view('connector', 'byModelName', { key: 'person', stale: 1 })
+        return Person.getConnector()
+          .view('connector', 'byModelName', { key: 'person', stale: 1 })
           .then((res) => {
             res.length.should.be.equal(2);
-            res.forEach(each => {
+            res.forEach((each) => {
               each.id.should.be.ok;
               each.key.should.be.ok;
             });
@@ -379,7 +448,8 @@ describe('Couchbase test', () => {
 
       it('can keep options unchanged', () => {
         let options = { key: 'person', stale: 1 };
-        return Person.getConnector().view('connector', 'byModelName', options)
+        return Person.getConnector()
+          .view('connector', 'byModelName', options)
           .then((res) => {
             res.length.should.be.equal(2);
             options.should.eql({ key: 'person', stale: 1 });
@@ -435,11 +505,14 @@ describe('Couchbase test', () => {
       });
 
       it('cannot destroy without giving id', () => {
-        return Person.destroyById('').then(() => {
-          throw new Error('expected an error');
-        }, (err) => {
-          should.exist(err);
-        });
+        return Person.destroyById('').then(
+          () => {
+            throw new Error('expected an error');
+          },
+          (err) => {
+            should.exist(err);
+          }
+        );
       });
 
       // TODO: more errors
@@ -671,9 +744,12 @@ describe('Couchbase test', () => {
       });
 
       it('can find when giving empty where object', () => {
-        return Person.find({
-          where: {}
-        }, { stale: 1 }).then((res) => {
+        return Person.find(
+          {
+            where: {}
+          },
+          { stale: 1 }
+        ).then((res) => {
           res.should.be.Array().with.length(2);
           res[0].should.be.has.key('_cas');
           res[1]['_cas'].should.be.ok();
@@ -690,44 +766,51 @@ describe('Couchbase test', () => {
 
     describe('Couchbase setting', () => {
       it('can update global setting view stale', () => {
-        const config = process.env.COUCHBASE === 'cb4' ? {
-          version: 4,
-          cluster: {
-            url: 'couchbase://localhost',
-            options: {}
-          },
-          stale: 1,
-          bucket: {
-            name: 'test_bucket',
-            password: '',
-            operationTimeout: 60 * 1000
-          }
-        } : {
-          version: 5,
-          cluster: {
-            url: 'couchbase://localhost',
-            username: 'Administrator',
-            password: 'password',
-            options: {}
-          },
-          stale: 1,
-          bucket: {
-            name: 'test_bucket',
-            operationTimeout: 60 * 1000
-          }
-        };
+        const config
+          = process.env.COUCHBASE === 'cb4'
+            ? {
+              version: 4,
+              cluster: {
+                url: 'couchbase://localhost',
+                options: {}
+              },
+              stale: 1,
+              bucket: {
+                name: 'test_bucket',
+                password: '',
+                operationTimeout: 60 * 1000
+              }
+            }
+            : {
+              version: 5,
+              cluster: {
+                url: 'couchbase://localhost',
+                username: 'Administrator',
+                password: 'password',
+                options: {}
+              },
+              stale: 1,
+              bucket: {
+                name: 'test_bucket',
+                operationTimeout: 60 * 1000
+              }
+            };
         let Pet;
-        const pets = [{
-          id: '0',
-          name: 'Lucy',
-          age: 1
-        }, {
-          id: '1',
-          name: 'Coco',
-          age: 2
-        }];
-        return init.getDataSource(config)
-          .then(res => {
+        const pets = [
+          {
+            id: '0',
+            name: 'Lucy',
+            age: 1
+          },
+          {
+            id: '1',
+            name: 'Coco',
+            age: 2
+          }
+        ];
+        return init
+          .getDataSource(config)
+          .then((res) => {
             ds = res;
             Pet = ds.createModel('pet', {
               id: {
@@ -739,7 +822,9 @@ describe('Couchbase test', () => {
             });
             return Promise.all([Pet.create(pets[0]), Pet.create(pets[1])]);
           })
-          .then(() => Pet.getConnector().view('connector', 'byModelName', { key: 'pet' }))
+          .then(() =>
+            Pet.getConnector().view('connector', 'byModelName', { key: 'pet' })
+          )
           .then((res) => res.should.be.Array().with.length(2));
       });
     });

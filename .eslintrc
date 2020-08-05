@@ -1,9 +1,13 @@
 {
-  extends: "wcl-backend",
-  parserOptions: {
-    ecmaVersion: 8,
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true
+  "extends": "wcl-backend",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
     }
+  },
+  "rules": {
+    "mocha/no-exclusive-tests": "warn",
+    "quotes": ["error", "single"]
   }
 }
